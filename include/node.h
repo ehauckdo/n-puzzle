@@ -1,6 +1,7 @@
 #ifndef NODE_H_INCLUDED
 #define NODE_H_INCLUDED
 #include <board.h>
+#include <vector>
 
 class Node{
     public:
@@ -8,6 +9,7 @@ class Node{
         ~Node();
 
         Board* board;
+        std::vector<Node> children;
 
 };
 

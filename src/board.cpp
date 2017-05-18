@@ -6,15 +6,15 @@
 
 Board::Board(const int size){
     board_size = size;
-    board = new int[board_size];
+    board.resize(board_size);
     randomizeBoard();
 }
 
 Board::Board(Board* b){
     board_size = b->board_size;
     current_pos = b->current_pos;
-    board = new int[board_size];
-    copyFromBoard(b);
+    board.resize(board_size);
+    board = b->board;
 }
 
 void Board::resetBoard(){
@@ -73,10 +73,6 @@ int Board::availableMoves(){
 
 }
 
-void Board::copyFromBoard(Board* b){
-    std::memcpy(this->board, b->board, board_size * sizeof *b->board);
-}
-
 Board::~Board(){
-    delete[] board;
+    board.clear();
 }

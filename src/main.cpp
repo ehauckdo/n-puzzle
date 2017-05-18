@@ -17,6 +17,7 @@ int main(int argc, char *argv[]){
     for(int i = 0; i < argc; i++){
         cout << argv[i] << endl;
     }
+
     int k = 0;
     cout << "=================================================" << endl;
     cout << "                     N-PUZZLE"                     << endl;
@@ -31,7 +32,6 @@ int main(int argc, char *argv[]){
     cout << "Tamanho escolhido: " << k << endl;
 
     Board b(k*k);
-    Board b2(k*k);
 
     cout << endl << "Tabuleiro gerado: " << endl;
     b.printBoard();
@@ -46,6 +46,6 @@ int main(int argc, char *argv[]){
     cout << "6 - A*"            << endl;
     cout << "7 - IDA*"          << endl;
 
-    cout << b.availableMoves() << endl;
+    //cout << b.availableMoves() << endl;
 
 }

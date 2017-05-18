@@ -1,12 +1,12 @@
 #ifndef BOARD_H_INCLUDED
 #define BOARD_H_INCLUDED
+#include <vector>
 
 class Board{
     public:
-        int* board;
+        std::vector<int> board;
         int current_pos;
         int board_size;
-        void copyFromBoard(Board* b);
 
         Board(const int size);
         Board(Board *b);
