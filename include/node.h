@@ -9,7 +9,9 @@ class Node{
         ~Node();
 
         Board* board;
-        std::vector<Node> children;
+        std::vector<Node*> children;
+        bool expand(int move);
+        bool isfullyExpanded();
 
 };
 

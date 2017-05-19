@@ -10,7 +10,7 @@ class Tree{
 
         void backTracking(Board* objective);
 
-    private:
+    //private:
         Node* root;
 
 };

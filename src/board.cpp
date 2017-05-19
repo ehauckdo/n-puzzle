@@ -39,6 +39,7 @@ void Board::randomizeBoard(){
         if(k == 0)
             current_pos = i;
     }
+
 }
 
 void Board::printBoard(){
@@ -53,16 +54,18 @@ void Board::printBoard(){
 
 int Board::availableMoves(){
     int k = sqrt(board_size);
-    std::cout << current_pos << ", " << k<< std:: endl;
-
     int relative_pos = (current_pos+1) % k;
 
-    if((current_pos < k || current_pos > k*(k-1))
+    if((current_pos < k || current_pos >= k*(k-1))
         && (relative_pos == 0 || relative_pos == 1))
         return 2;
 
-    if((current_pos > k || current_pos < k*(k-1))
+    if((current_pos >= k || current_pos < k*(k-1))
         && (relative_pos == 0 || relative_pos == 1))
+        return 3;
+
+    if((current_pos < k ||  current_pos >= k*(k-1))
+        && (relative_pos != 0 && relative_pos != 1))
         return 3;
 
     if((current_pos > k || current_pos < k*(k-1))
@@ -71,6 +74,10 @@ int Board::availableMoves(){
 
     return -1;
 
+}
+
+bool Board::doMove(int move){
+    return true;
 }
 
 Board::~Board(){

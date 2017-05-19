@@ -11,8 +11,6 @@ using namespace std;
 
 int main(int argc, char *argv[]){
 
-
-
     cout << argc << endl;
     for(int i = 0; i < argc; i++){
         cout << argv[i] << endl;
@@ -46,6 +44,14 @@ int main(int argc, char *argv[]){
     cout << "6 - A*"            << endl;
     cout << "7 - IDA*"          << endl;
 
-    //cout << b.availableMoves() << endl;
+    cout << b.availableMoves() << endl;
+    Tree t(&b);
+    for(int i = 0; i < 4; i++){
+        t.root->expand(i);
+        if(t.root->isfullyExpanded() == false)
+            cout << "NOT fully expanded" << endl;
+        else
+            cout << "IS fully expanded" << endl;
+    }
 
 }
