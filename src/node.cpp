@@ -2,8 +2,9 @@
 #include <cstddef>
 #include <iostream>
 
-Node::Node(Board* b){
+Node::Node(Board* b, int executedMove){
     board = new Board(b);
+    lastMove = executedMove;
 
     for(int i = 0; i < b->availableMoves(); i++){
         children.push_back(NULL);
@@ -24,7 +25,7 @@ bool Node::expand(int move){
 
     Board expanded_b(board);
     expanded_b.doMove(move);
-    children[move] = new Node(&expanded_b);
+    children[move] = new Node(&expanded_b, move);
     return true;
 }
 

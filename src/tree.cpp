@@ -1,7 +1,7 @@
 #include "tree.h"
 
 Tree::Tree(Board *b){
-    root = new Node(b);
+    root = new Node(b, -1);
 }
 
 Tree::~Tree(){
