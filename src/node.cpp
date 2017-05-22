@@ -6,13 +6,17 @@ Node::Node(Board* b, int executedMove){
     board = new Board(b);
     lastMove = executedMove;
 
-    for(int i = 0; i < b->availableMoves(); i++){
+    int n_moves = lastMove == -1 ? b->availableMoves() : b->availableMoves()-1;
+
+    for(int i = 0; i < n_moves; i++){
         children.push_back(NULL);
     }
 }
 
 bool Node::isfullyExpanded(){
-    for(int i = 0; i < board->availableMoves(); i++){
+    int n_moves = lastMove == -1 ? board->availableMoves() : board->availableMoves()-1;
+
+    for(int i = 0; i < n_moves; i++){
         if(children[i] == NULL)
             return false;
     }
