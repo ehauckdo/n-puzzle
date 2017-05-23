@@ -2,10 +2,10 @@
 #define BOARD_H_INCLUDED
 #include <vector>
 
-#define MOVE_UP 0;
-#define MOVE_DOWN 1;
-#define MOVE_LEFT 2;
-#define MOVE RIGHT 3;
+#define MOVE_UP 0
+#define MOVE_DOWN 1
+#define MOVE_LEFT 2
+#define MOVE_RIGHT 3
 
 class Board{
     public:
@@ -21,7 +21,7 @@ class Board{
         void randomizeBoard();
         void resetBoard();
         bool doMove(int move);
-        int availableMoves();
+        std::vector<int> availableMoves();
 };
 
 #endif // BOARD_H_INCLUDED

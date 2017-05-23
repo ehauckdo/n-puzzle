@@ -44,7 +44,7 @@ int main(int argc, char *argv[]){
     cout << "6 - A*"            << endl;
     cout << "7 - IDA*"          << endl;
 
-    cout << b.availableMoves() << endl;
+    cout << b.availableMoves().size() << endl;
     Tree t(&b);
     for(int i = 0; i < 4; i++){
         t.root->expand(i);

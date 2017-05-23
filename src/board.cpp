@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <cstring>
+#include <util.h>
 
 Board::Board(const int size){
     board_size = size;
@@ -52,28 +53,31 @@ void Board::printBoard(){
     }
 }
 
-int Board::availableMoves(){
+std::vector<int> Board::availableMoves(){
+
+    std::vector<int> moves;
     int k = sqrt(board_size);
-    int relative_pos = (current_pos+1) % k;
 
-    if((current_pos < k || current_pos >= k*(k-1))
-        && (relative_pos == 0 || relative_pos == 1))
-        return 2;
+    // get 0 position
+    std::pair<int, int> matrix_pos = util::getArrayToMatrixIndex(current_pos, k);
 
-    if((current_pos >= k || current_pos < k*(k-1))
-        && (relative_pos == 0 || relative_pos == 1))
-        return 3;
+    // check MOVE_UP
+    if(matrix_pos.second - 1 >= 0)
+        moves.push_back(MOVE_UP);
 
-    if((current_pos < k ||  current_pos >= k*(k-1))
-        && (relative_pos != 0 && relative_pos != 1))
-        return 3;
+     // check MOVE_DOWN
+    if(matrix_pos.second + 1 <= k-1)
+        moves.push_back(MOVE_DOWN);
 
-    if((current_pos > k || current_pos < k*(k-1))
-        && (relative_pos != 0 && relative_pos != 1))
-        return 4;
+    // check MOVE_LEFT
+    if(matrix_pos.first - 1 >= 0)
+        moves.push_back(MOVE_LEFT);
 
-    return -1;
+    // check MOVE_RIGHT
+    if(matrix_pos.first + 1 <= k-1)
+        moves.push_back(MOVE_RIGHT);
 
+    return moves;
 }
 
 bool Board::doMove(int move){
