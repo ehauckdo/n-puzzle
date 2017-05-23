@@ -60,27 +60,65 @@ std::vector<int> Board::availableMoves(){
 
     // get 0 position
     std::pair<int, int> matrix_pos = util::getArrayToMatrixIndex(current_pos, k);
+    std::cout  << "MATRIX POS:" << matrix_pos.first << ", " << matrix_pos.second << std::endl;
 
     // check MOVE_UP
-    if(matrix_pos.second - 1 >= 0)
+    if(matrix_pos.first - 1 >= 0)
         moves.push_back(MOVE_UP);
 
      // check MOVE_DOWN
-    if(matrix_pos.second + 1 <= k-1)
+    if(matrix_pos.first + 1 <= k-1)
         moves.push_back(MOVE_DOWN);
 
     // check MOVE_LEFT
-    if(matrix_pos.first - 1 >= 0)
+    if(matrix_pos.second - 1 >= 0)
         moves.push_back(MOVE_LEFT);
 
     // check MOVE_RIGHT
-    if(matrix_pos.first + 1 <= k-1)
+    if(matrix_pos.second + 1 <= k-1)
         moves.push_back(MOVE_RIGHT);
 
     return moves;
 }
 
 bool Board::doMove(int move){
+
+    std::pair<int, int> pos_0 = util::getArrayToMatrixIndex(current_pos, sqrt(board_size));
+    std::pair<int, int> new_pos;
+
+    std::vector<int> availableMoves = this->availableMoves();
+    std::cout <<"Available moves:" << std::endl;
+    for(std::vector<int>::iterator it = availableMoves.begin(); it != availableMoves.end(); it++)
+        std::cout << *it << ", ";
+    std::cout << std::endl;
+
+    if(util::contains(availableMoves, move) == false)
+        return false;
+
+    switch(move){
+        case MOVE_UP:
+            new_pos.first = pos_0.first-1;
+            new_pos.second = pos_0.second;
+            break;
+        case MOVE_DOWN:
+            new_pos.first = pos_0.first+1;
+            new_pos.second = pos_0.second;
+            break;
+        case MOVE_LEFT:
+            new_pos.first = pos_0.first;
+            new_pos.second = pos_0.second-1;
+            break;
+        case MOVE_RIGHT:
+            new_pos.first = pos_0.first;
+            new_pos.second = pos_0.second+1;
+            break;
+    }
+
+    int index_to_change = util::getMatrixToArrayIndex(new_pos, sqrt(board_size));
+
+    this->board[current_pos] = board[index_to_change];
+    this->board[index_to_change] = 0;
+    std::cout << "index to change:" << index_to_change << std::endl;
     return true;
 }
 

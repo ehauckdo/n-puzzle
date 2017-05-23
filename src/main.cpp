@@ -54,4 +54,7 @@ int main(int argc, char *argv[]){
             cout << "IS fully expanded" << endl;
     }
 
+    if(b.doMove(MOVE_LEFT))
+        b.printBoard();
+
 }
