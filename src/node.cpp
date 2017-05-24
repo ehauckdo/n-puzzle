@@ -31,17 +31,17 @@ bool Node::isfullyExpanded(){
     return true;
 }
 
-bool Node::expand(int move){
+Node* Node::expand(int move){
     if(!util::contains(availableMoves, move) || children[move] != NULL)
-        return false;
+        return NULL;
 
     Board expanded_b(board);
     expanded_b.doMove(move);
     children[move] = new Node(this, &expanded_b, move);
-    return true;
+    return children[move];
 }
 
-bool Node::expand(){
+Node* Node::expand(){
     int next_move = -1;
     for(std::vector<int>::iterator it = availableMoves.begin(); it != availableMoves.end(); it++){
         if(children[*it] == NULL){
@@ -51,12 +51,12 @@ bool Node::expand(){
     }
 
     if(next_move == -1)
-        return false;
+        return NULL;
 
     Board expanded_b(board);
     expanded_b.doMove(next_move);
     children[next_move] = new Node(this, &expanded_b, next_move);
-    return true;
+    return children[next_move];
 }
 
 
