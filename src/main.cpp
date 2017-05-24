@@ -47,14 +47,14 @@ int main(int argc, char *argv[]){
     cout << b.availableMoves().size() << endl;
     Tree t(&b);
     for(int i = 0; i < 4; i++){
-        t.root->expand(i);
+        t.root->expand();
         if(t.root->isfullyExpanded() == false)
-            cout << "NOT fully expanded" << endl;
+            cout << "NOT fully expanded: " << i << endl;
         else
-            cout << "IS fully expanded" << endl;
+            cout << "IS fully expanded: " << i << endl;
     }
 
-    if(b.doMove(MOVE_LEFT))
+    if(b.doMove(MOVE_RIGHT))
         b.printBoard();
 
 }

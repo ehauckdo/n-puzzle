@@ -60,7 +60,7 @@ std::vector<int> Board::availableMoves(){
 
     // get 0 position
     std::pair<int, int> matrix_pos = util::getArrayToMatrixIndex(current_pos, k);
-    std::cout  << "MATRIX POS:" << matrix_pos.first << ", " << matrix_pos.second << std::endl;
+//    std::cout  << "MATRIX POS:" << matrix_pos.first << ", " << matrix_pos.second << std::endl;
 
     // check MOVE_UP
     if(matrix_pos.first - 1 >= 0)
@@ -87,10 +87,10 @@ bool Board::doMove(int move){
     std::pair<int, int> new_pos;
 
     std::vector<int> availableMoves = this->availableMoves();
-    std::cout <<"Available moves:" << std::endl;
-    for(std::vector<int>::iterator it = availableMoves.begin(); it != availableMoves.end(); it++)
-        std::cout << *it << ", ";
-    std::cout << std::endl;
+//    std::cout <<"Available moves:" << std::endl;
+//    for(std::vector<int>::iterator it = availableMoves.begin(); it != availableMoves.end(); it++)
+//        std::cout << *it << ", ";
+//    std::cout << std::endl;
 
     if(util::contains(availableMoves, move) == false)
         return false;
@@ -118,7 +118,7 @@ bool Board::doMove(int move){
 
     this->board[current_pos] = board[index_to_change];
     this->board[index_to_change] = 0;
-    std::cout << "index to change:" << index_to_change << std::endl;
+//    std::cout << "index to change:" << index_to_change << std::endl;
     return true;
 }
 

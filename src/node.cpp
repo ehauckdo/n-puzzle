@@ -1,37 +1,60 @@
 #include "node.h"
 #include <cstddef>
 #include <iostream>
+#include <util.h>
+#include <algorithm>
 
 Node::Node(Board* b, int executedMove){
     board = new Board(b);
     lastMove = executedMove;
-    int availableMoves = board->availableMoves().size();
+    availableMoves = board->availableMoves();
 
-    int n_moves = (lastMove == -1) ? availableMoves : availableMoves-1;
+    if(lastMove != -1){
+        std::vector<int>::iterator position = std::find(availableMoves.begin(), availableMoves.end(), lastMove);
+        if (position != availableMoves.end())
+            availableMoves.erase(position);
+    }
 
-    for(int i = 0; i < n_moves; i++){
+    for(int i = 0; i < 4; i++){
         children.push_back(NULL);
     }
 }
 
 bool Node::isfullyExpanded(){
-    int availableMoves = board->availableMoves().size();
-    int n_moves = lastMove == -1 ? availableMoves : availableMoves-1;
-
-    for(int i = 0; i < n_moves; i++){
-        if(children[i] == NULL)
+    for(std::vector<int>::iterator it = availableMoves.begin(); it != availableMoves.end(); it++){
+        if(children[*it] == NULL){
             return false;
+        }
     }
+
     return true;
 }
 
 bool Node::expand(int move){
-    if(children[move] != NULL)
+    if(!util::contains(availableMoves, move) || children[move] != NULL)
         return false;
 
     Board expanded_b(board);
     expanded_b.doMove(move);
     children[move] = new Node(&expanded_b, move);
+    return true;
+}
+
+bool Node::expand(){
+    int next_move = -1;
+    for(std::vector<int>::iterator it = availableMoves.begin(); it != availableMoves.end(); it++){
+        if(children[*it] == NULL){
+            next_move = *it;
+            break;
+        }
+    }
+
+    if(next_move == -1)
+        return false;
+
+    Board expanded_b(board);
+    expanded_b.doMove(next_move);
+    children[next_move] = new Node(&expanded_b, next_move);
     return true;
 }
 

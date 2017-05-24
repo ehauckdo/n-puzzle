@@ -10,5 +10,11 @@ Tree::~Tree(){
 
 
 void Tree::backTracking(Board* objective){
+    Node current(root->board, -1);
+    Node *root_copy = &current;
+
+    while(current.board != objective){
+
+    }
 
 }

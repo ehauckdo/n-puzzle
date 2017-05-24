@@ -12,7 +12,9 @@ class Node{
         int lastMove;
         std::vector<Node*> children;
         bool expand(int move);
+        bool expand();
         bool isfullyExpanded();
+        std::vector<int> availableMoves;
 
 };
 
