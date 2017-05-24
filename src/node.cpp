@@ -61,4 +61,7 @@ bool Node::expand(){
 
 Node::~Node(){
     delete board;
+    for(int i = 0; i < 4; i++){
+        delete children[i];
+    }
 }
