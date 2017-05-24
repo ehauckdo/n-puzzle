@@ -10,6 +10,7 @@ class Node{
 
         Board* board;
         Node* parent;
+        int id;
         int lastMove;
         std::vector<Node*> children;
         Node* expand(int move);
@@ -17,6 +18,7 @@ class Node{
         bool isfullyExpanded();
         std::vector<int> availableMoves;
 
+        static int id_counter;
 };
 
 #endif // NODE_H_INCLUDED

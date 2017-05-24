@@ -1,4 +1,3 @@
-#include <string>
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -32,6 +31,14 @@ namespace util{
     }
 
     bool contains(std::vector<int> v, int element){
+        if(std::find(v.begin(), v.end(), element) != v.end()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    bool contains(std::vector<std::vector<int> > v, std::vector<int> element){
         if(std::find(v.begin(), v.end(), element) != v.end()) {
             return true;
         } else {

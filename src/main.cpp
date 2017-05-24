@@ -9,6 +9,8 @@
 using namespace util;
 using namespace std;
 
+
+
 int main(int argc, char *argv[]){
 
     cout << argc << endl;
@@ -31,8 +33,14 @@ int main(int argc, char *argv[]){
 
     Board b(k*k);
 
+    Board b2(b);
+    b2.doMove(MOVE_LEFT);
+    b2.doMove(MOVE_LEFT);
+
     cout << endl << "Tabuleiro gerado: " << endl;
     b.printBoard();
+    cout << endl;
+    b2.printBoard();
     cout << endl;
 
     cout << "MENU DE OPÇÕES"    << endl;
@@ -45,8 +53,11 @@ int main(int argc, char *argv[]){
     cout << "7 - IDA*"          << endl;
 
     cout << b.availableMoves().size() << endl;
+    cout << b2.availableMoves().size() << endl;
     Tree t(&b);
-    for(int i = 0; i < 4; i++){
+
+    t.backTracking(&b2);
+    /*for(int i = 0; i < 4; i++){
         t.root->expand();
         if(t.root->isfullyExpanded() == false)
             cout << "NOT fully expanded: " << i << endl;
@@ -55,6 +66,6 @@ int main(int argc, char *argv[]){
     }
 
     if(b.doMove(MOVE_RIGHT))
-        b.printBoard();
+        b.printBoard();*/
 
 }

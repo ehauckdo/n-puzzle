@@ -4,6 +4,7 @@
 #include <math.h>
 #include <cstring>
 #include <util.h>
+#include <stdexcept>
 
 Board::Board(const int size){
     board_size = size;
@@ -14,8 +15,13 @@ Board::Board(const int size){
 Board::Board(Board* b){
     board_size = b->board_size;
     current_pos = b->current_pos;
-    board.resize(board_size);
-    board = b->board;
+    //board.resize(board_size);
+    for(std::vector<int>::iterator it = b->board.begin(); it != b->board.end(); it++){
+        std::cout << *it << std::endl;
+        board.push_back(*it);
+    }
+    std::cout << std::endl;
+    //board = b->board;
 }
 
 void Board::resetBoard(){
@@ -118,6 +124,8 @@ bool Board::doMove(int move){
 
     this->board[current_pos] = board[index_to_change];
     this->board[index_to_change] = 0;
+
+    current_pos = index_to_change;
 //    std::cout << "index to change:" << index_to_change << std::endl;
     return true;
 }

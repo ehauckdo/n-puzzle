@@ -4,11 +4,15 @@
 #include <util.h>
 #include <algorithm>
 
+int Node::id_counter = 0;
+
 Node::Node(Node* parent, Board* b, int executedMove){
     board = new Board(b);
-    parent = parent;
+
+    this->parent = parent;
     lastMove = executedMove;
     availableMoves = board->availableMoves();
+    id = id_counter++;
 
     if(lastMove != -1){
         std::vector<int>::iterator position = std::find(availableMoves.begin(), availableMoves.end(), lastMove);
@@ -35,9 +39,9 @@ Node* Node::expand(int move){
     if(!util::contains(availableMoves, move) || children[move] != NULL)
         return NULL;
 
-    Board expanded_b(board);
-    expanded_b.doMove(move);
-    children[move] = new Node(this, &expanded_b, move);
+    Board* expanded_b = new Board(board);
+    expanded_b->doMove(move);
+    children[move] = new Node(this, expanded_b, move);
     return children[move];
 }
 
@@ -56,13 +60,14 @@ Node* Node::expand(){
     Board expanded_b(board);
     expanded_b.doMove(next_move);
     children[next_move] = new Node(this, &expanded_b, next_move);
+
     return children[next_move];
 }
 
 
 Node::~Node(){
-    delete board;
     for(int i = 0; i < 4; i++){
         delete children[i];
     }
+    delete board;
 }
