@@ -5,10 +5,11 @@
 
 class Node{
     public:
-        Node(Board* b, int executedMove);
+        Node(Node* parent, Board* b, int executedMove);
         ~Node();
 
         Board* board;
+        Node* parent;
         int lastMove;
         std::vector<Node*> children;
         bool expand(int move);

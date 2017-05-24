@@ -4,8 +4,9 @@
 #include <util.h>
 #include <algorithm>
 
-Node::Node(Board* b, int executedMove){
+Node::Node(Node* parent, Board* b, int executedMove){
     board = new Board(b);
+    parent = parent;
     lastMove = executedMove;
     availableMoves = board->availableMoves();
 
@@ -36,7 +37,7 @@ bool Node::expand(int move){
 
     Board expanded_b(board);
     expanded_b.doMove(move);
-    children[move] = new Node(&expanded_b, move);
+    children[move] = new Node(this, &expanded_b, move);
     return true;
 }
 
@@ -54,7 +55,7 @@ bool Node::expand(){
 
     Board expanded_b(board);
     expanded_b.doMove(next_move);
-    children[next_move] = new Node(&expanded_b, next_move);
+    children[next_move] = new Node(this, &expanded_b, next_move);
     return true;
 }
 
