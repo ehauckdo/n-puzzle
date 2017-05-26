@@ -15,13 +15,7 @@ Board::Board(const int size){
 Board::Board(Board* b){
     board_size = b->board_size;
     current_pos = b->current_pos;
-    //board.resize(board_size);
-    for(std::vector<int>::iterator it = b->board.begin(); it != b->board.end(); it++){
-        std::cout << *it << std::endl;
-        board.push_back(*it);
-    }
-    std::cout << std::endl;
-    //board = b->board;
+    board = b->board;
 }
 
 void Board::resetBoard(){
@@ -128,6 +122,45 @@ bool Board::doMove(int move){
     current_pos = index_to_change;
 //    std::cout << "index to change:" << index_to_change << std::endl;
     return true;
+}
+
+bool Board::isSolvable(Board* target){
+
+    int total_inversions = 0;
+
+    for(std::vector<int>::iterator it = this->board.begin(); it != this->board.end(); it++){
+        int src_number = *it;
+        int src_index = std::distance(this->board.begin(), it);
+        int tgt_index = util::find(target->board, src_number);
+
+        if(src_number == 0)
+            continue;
+
+        //std::cout << "src_number: " << *it << ",src_index: " << src_index << ",tgt_index: " << tgt_index << std::endl;
+
+        // number not found in target, malformed board
+        if(tgt_index == -1)
+            return false;
+
+        for(int i = 0; i < tgt_index; i++){
+            bool found = false;
+            for(int j = 0; j < src_index; j++){
+                if(target->board[i] == this->board[j]){
+                    found = true;
+                    break;
+                }
+            }
+            if(found == false && target->board[i] != 0)
+                total_inversions += 1;
+        }
+        //std::cout << "total_inversion: " << total_inversions << std::endl;
+
+    }
+
+    if(total_inversions % 2 == 0)
+        return true;
+    else
+        return false;
 }
 
 Board::~Board(){
