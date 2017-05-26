@@ -46,4 +46,14 @@ namespace util{
         }
     }
 
+    int find(std::vector<int> v, int element){
+        std::vector<int>::iterator it;
+
+        it = find (v.begin(), v.end(), element);
+        if (it != v.end())
+            return std::distance(v.begin(), it);
+        else
+            return -1;
+    }
+
 }

@@ -9,4 +9,5 @@ namespace util{
     std::pair<int, int> getArrayToMatrixIndex(int pos, int column_size);
     bool contains(std::vector<int> v, int element);
     bool contains(std::vector<std::vector<int> > v, std::vector<int> element);
+    int find(std::vector<int> v, int element);
 }
