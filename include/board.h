@@ -25,6 +25,9 @@ class Board{
         bool doMove(int move);
         std::vector<int> availableMoves();
         bool isSolvable(Board* target);
+
+    private:
+        int getInversionCount(Board* target);
 };
 
 #endif // BOARD_H_INCLUDED

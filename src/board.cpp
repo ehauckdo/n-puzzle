@@ -127,6 +127,25 @@ bool Board::doMove(int move){
 bool Board::isSolvable(Board* target){
 
     int k = sqrt(board_size);
+    int total_inversions = getInversionCount(target);
+
+    if(k % 2 != 0){
+        if(total_inversions % 2 == 0)
+            return true;
+        else
+            return false;
+    }
+    else{
+        if(current_pos % 2 == 0 && total_inversions % 2 == 1)
+            return true;
+        if(current_pos % 2 == 1 && total_inversions % 2 == 0)
+            return true;
+        return false;
+    }
+
+}
+
+int Board::getInversionCount(Board* target){
     int total_inversions = 0;
 
     for(std::vector<int>::iterator it = this->board.begin(); it != this->board.end(); it++){
@@ -158,21 +177,7 @@ bool Board::isSolvable(Board* target){
 
     }
 
-    if(k % 2 != 0){
-        if(total_inversions % 2 == 0)
-            return true;
-        else
-            return false;
-    }
-    else{
-        std::pair<int, int> pos = util::getArrayToMatrixIndex(current_pos, k);
-        if(pos.second % 2 == 0 && total_inversions % 2 == 1)
-            return true;
-        if(pos.second % 2 == 1 && total_inversions % 2 == 0)
-            return true;
-        return false;
-    }
-
+    return total_inversions;
 }
 
 Board::~Board(){
