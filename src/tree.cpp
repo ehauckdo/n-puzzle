@@ -68,5 +68,40 @@ void Tree::BFS(Board* objective){
 }
 
 void Tree::DFS(Board* objective){
+    Node* current = new Node(NULL, root->board, -1);
+    Node* root_copy = current;
+
+    std::vector<std::vector<int> > visited_states;
+    std::vector<Node*> open_nodes;
+
+    open_nodes.push_back(current);
+    Node* found = NULL;
+
+    while(open_nodes.size() > 0 && current != NULL){
+
+        // check if current is the objective
+        if(current->board == objective){
+            std::cout << "Objective found! exiting...: " << std::endl;
+            break;
+        }
+
+        // open current node
+        Node* next = current;
+        do{
+            open_nodes.push_back(next->expand());
+        }while(next->isfullyExpanded() == false);
+
+        current = open_nodes.front();
+        open_nodes.erase(open_nodes.begin());
+        std::cout << "Size: " << open_nodes.size() << std::endl;
+
+    }
+
+    if(found != NULL){
+        found->board->printBoard();
+    }
+
+
+    delete root_copy;
 
 }
