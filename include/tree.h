@@ -9,6 +9,8 @@ class Tree{
         ~Tree();
 
         void backTracking(Board* objective);
+        void DFS(Board* objective);
+        void BFS(Board* object);
 
     //private:
         Node* root;

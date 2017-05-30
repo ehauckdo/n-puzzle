@@ -24,7 +24,8 @@ void Tree::backTracking(Board* objective){
     while(current != NULL && current->board != objective){
 
         Node* next = current->expand();
-
+        //next->board->printBoard();
+        //return;
         if(next != NULL){
             //std::cout << "Testing state (id:"<< next->id<<"): " << std::endl;
             //next->board->printBoard();
@@ -41,6 +42,7 @@ void Tree::backTracking(Board* objective){
                 else{
                     //std::cout << "New state! saving...: " << std::endl;
                     visited_states.push_back(next->board->board);
+                    //std::cout << "Number of states: " << visited_states.size() << std::endl;
                 }
             }
             current = next;
@@ -58,5 +60,13 @@ void Tree::backTracking(Board* objective){
 
 
     delete root_copy;
+
+}
+
+void Tree::BFS(Board* objective){
+
+}
+
+void Tree::DFS(Board* objective){
 
 }
