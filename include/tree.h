@@ -10,7 +10,7 @@ class Tree{
 
         void backTracking(Board* objective);
         void DFS(Board* objective);
-        void BFS(Board* object);
+        void BFS(Board* objective);
 
     //private:
         Node* root;
