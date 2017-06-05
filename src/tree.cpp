@@ -105,3 +105,19 @@ void Tree::DFS(Board* objective){
     delete root_copy;
 
 }
+
+void Tree::uniformCostSearch(Board* objective){
+
+}
+
+void Tree::greedySearch(Board* objective){
+
+}
+
+void Tree::aStar(Board* objective){
+
+}
+
+void Tree::idaStar(Board* objective){
+
+}
