@@ -64,6 +64,44 @@ void Tree::backTracking(Board* objective){
 }
 
 void Tree::DFS(Board* objective){
+    Node* current = new Node(NULL, root->board, -1);
+    Node* root_copy = current;
+
+    std::vector<std::vector<int> > visited_states;
+    std::vector<Node*> open_nodes;
+
+    open_nodes.push_back(current);
+    Node* found = NULL;
+
+    while(open_nodes.size() > 0 && current != NULL){
+
+        current = open_nodes.back();
+        open_nodes.pop_back();
+
+         if(current->board->board == objective->board){
+            std::cout << "Objective found! exiting...: " << std::endl;
+            found = current;
+            break;
+        }
+
+        Node* next = current;
+        //std::cout << "Current: " << std::endl;
+        //next->board->printBoard();
+        //std::cout << std::endl;
+        do{
+            Node* child = next->expand();
+            open_nodes.push_back(child);
+            //std::cout << "Inserting: " << std::endl;
+            //child->board->printBoard();
+        }while(next->isfullyExpanded() == false);
+
+    }
+
+    if(found != NULL){
+        found->board->printBoard();
+    }
+
+    delete root_copy;
 
 }
 
@@ -90,21 +128,18 @@ void Tree::BFS(Board* objective){
 
 
         Node* next = current;
-        /*std::cout << "Current: " << std::endl;
-        next->board->printBoard();
-        std::cout << std::endl;*/
+        //std::cout << "Current: " << std::endl;
+        //next->board->printBoard();
+        //std::cout << std::endl;
         // open current node
         do{
-            Node* test = next->expand();
-            open_nodes.push_back(test);
-            /*test->board->printBoard();
-            std::cout << "Expanding..." << std::endl;*/
+            Node* child = next->expand();
+            open_nodes.push_back(child);
+            //std::cout << "Inserting: " << std::endl;
+            //child->board->printBoard();
         }while(next->isfullyExpanded() == false);
 
-
-
         open_nodes.erase(open_nodes.begin());
-        //std::cout << "Size: " << open_nodes.size() << std::endl;
 
     }
 
