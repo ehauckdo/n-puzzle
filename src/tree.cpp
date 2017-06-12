@@ -63,11 +63,11 @@ void Tree::backTracking(Board* objective){
 
 }
 
-void Tree::BFS(Board* objective){
+void Tree::DFS(Board* objective){
 
 }
 
-void Tree::DFS(Board* objective){
+void Tree::BFS(Board* objective){
     Node* current = new Node(NULL, root->board, -1);
     Node* root_copy = current;
 
@@ -79,28 +79,38 @@ void Tree::DFS(Board* objective){
 
     while(open_nodes.size() > 0 && current != NULL){
 
+        current = open_nodes.front();
+
         // check if current is the objective
-        if(current->board == objective){
+        if(current->board->board == objective->board){
             std::cout << "Objective found! exiting...: " << std::endl;
+            found = current;
             break;
         }
 
-        // open current node
+
         Node* next = current;
+        /*std::cout << "Current: " << std::endl;
+        next->board->printBoard();
+        std::cout << std::endl;*/
+        // open current node
         do{
-            open_nodes.push_back(next->expand());
+            Node* test = next->expand();
+            open_nodes.push_back(test);
+            /*test->board->printBoard();
+            std::cout << "Expanding..." << std::endl;*/
         }while(next->isfullyExpanded() == false);
 
-        current = open_nodes.front();
+
+
         open_nodes.erase(open_nodes.begin());
-        std::cout << "Size: " << open_nodes.size() << std::endl;
+        //std::cout << "Size: " << open_nodes.size() << std::endl;
 
     }
 
     if(found != NULL){
         found->board->printBoard();
     }
-
 
     delete root_copy;
 
