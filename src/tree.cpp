@@ -216,13 +216,89 @@ void Tree::greedySearch(Board* objective){
 
     }
 
+    if(found != NULL){
+        found->board->printBoard();
+    }
+
     open_nodes.clear();
     delete root_copy;
 }
 
-void Tree::aStar(Board* objective){
-
+int getGvalue(Node* node, Node* root){
+    Node *traverser = node;
+    int g = 0;
+    while(traverser != root){
+        traverser = traverser->parent;
+        g = g + 1;
+    }
+    return g;
 }
+
+void Tree::aStar(Board* objective){
+    Node* current = new Node(NULL, root->board, -1);
+    Node* root_copy = current;
+
+    //std::cout << "ROOT:" << std::endl;
+    //root_copy->board->printBoard();
+    //std::cout << std::endl;
+
+    std::vector<Node*> open_nodes;
+
+    open_nodes.push_back(current);
+    Node* found = NULL;
+
+    while(open_nodes.size() > 0 && current != NULL){
+
+        current = open_nodes.front();
+        open_nodes.erase(open_nodes.begin());
+
+        // check if current is the objective
+        if(current->board->board == objective->board){
+            std::cout << "Objective found! exiting...: " << std::endl;
+            found = current;
+            break;
+        }
+
+        do{
+            Node* child = current->expand();
+
+            int i = 0;
+            int initial_size = open_nodes.size();
+
+            int new_child_value = child->board->getH2(objective) + getGvalue(child, root_copy);
+            //std::cout << "F(x) + g(x) of child: " << child->board->getH2(objective) << " + " << getGvalue(child, root_copy) << std::endl;
+            //child->board->printBoard();
+            //std::cout << std::endl;
+
+            // insert ordered
+            for(std::vector<Node*>::iterator it = open_nodes.begin(); it != open_nodes.end(); it++){
+                int value = (*it)->board->getH2(objective) + getGvalue(*it, root_copy);
+                if(new_child_value < value){
+                    open_nodes.insert(it, child);
+                    //std::cout << "Inserted at "<< i <<" position" << std::endl;
+                    break;
+                }
+                i += 1;
+            }
+
+            if(open_nodes.size() == initial_size){
+                open_nodes.push_back(child);
+                //std::cout << "Inserted at last position" << std::endl;
+            }
+
+        }while(current->isfullyExpanded() == false);
+
+    }
+
+    if(found != NULL){
+        found->board->printBoard();
+    }
+
+    open_nodes.clear();
+    delete root_copy;
+}
+
+
 
 void Tree::idaStar(Board* objective){
 
