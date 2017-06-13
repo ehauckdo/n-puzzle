@@ -190,6 +190,21 @@ int Board::getH1(Board* target){
 
 }
 
+int Board::getH2(Board* target){
+    int h2 = 0;
+    for(int i = 0; i < board_size; i++){
+        std::pair<int, int> pos_init = util::getArrayToMatrixIndex(i, sqrt(board_size));
+        for(int j = 0; j < target->board_size; j++){
+            if(board[i] == target->board[j]){
+                std::pair<int, int> pos_target = util::getArrayToMatrixIndex(j, sqrt(target->board_size));
+                h2 = h2 + abs(pos_target.first - pos_init.first);
+                h2 = h2 + abs(pos_target.second - pos_init.second);
+            }
+        }
+    }
+    return h2;
+
+}
 
 Board::~Board(){
     board.clear();
