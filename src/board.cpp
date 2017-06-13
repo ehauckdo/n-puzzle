@@ -180,6 +180,17 @@ int Board::getInversionCount(Board* target){
     return total_inversions;
 }
 
+int Board::getH1(Board* target){
+    int h1 = 0;
+    for(int i = 0; i < board_size; i++){
+        if(board[i] != target->board[i])
+            h1 = h1 + 1;
+    }
+    return h1;
+
+}
+
+
 Board::~Board(){
     board.clear();
 }
