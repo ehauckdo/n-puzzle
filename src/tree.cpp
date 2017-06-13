@@ -3,6 +3,7 @@
 #include <util.h>
 #include <iostream>
 
+
 Tree::Tree(Board* b){
     root = new Node(NULL, b, -1);
 }
@@ -15,6 +16,7 @@ Tree::~Tree(){
 void Tree::backTracking(Board* objective){
     Node* current = new Node(NULL, root->board, -1);
     Node* root_copy = current;
+    int i = 0;
 
     std::vector<std::vector<int> > visited_states;
     visited_states.push_back(current->board->board);
@@ -24,13 +26,17 @@ void Tree::backTracking(Board* objective){
     while(current != NULL && current->board != objective){
 
         Node* next = current->expand();
-        //next->board->printBoard();
+        i++;
+        if(i > 15)
+            return;
+
+        next->board->printBoard();
+        std::cout << std::endl;
         //return;
         if(next != NULL){
-            //std::cout << "Testing state (id:"<< next->id<<"): " << std::endl;
-            //next->board->printBoard();
+
             if(util::contains(visited_states, next->board->board)){
-                 //std::cout << "Already in history. Continuing...: " << std::endl;
+                //std::cout << "Already in history. Continuing...: " << std::endl;
                continue;
             }
             else{
@@ -49,8 +55,15 @@ void Tree::backTracking(Board* objective){
         }
 
         else{
+            Node *del = current;
             current = current->parent;
-            //std::cout << "No more expansions! Returning to parent (id:"<< current->id<<")" << std::endl;
+            //std::cout << "Returning to parent (id:"<< current->id<<")" << std::endl;
+            // Node fully expanded, so free any children before returning to parent
+            for(int i = 0; i < 4; i ++){
+                delete del->children[i];
+                del->children[i] = NULL;
+            }
+
         }
     }
 
@@ -152,11 +165,59 @@ void Tree::BFS(Board* objective){
 }
 
 void Tree::uniformCostSearch(Board* objective){
-
+    DFS(objective);
 }
 
 void Tree::greedySearch(Board* objective){
+    Node* current = new Node(NULL, root->board, -1);
+    Node* root_copy = current;
 
+    std::vector<Node*> open_nodes;
+
+    open_nodes.push_back(current);
+    Node* found = NULL;
+
+    while(open_nodes.size() > 0 && current != NULL){
+
+        current = open_nodes.front();
+        open_nodes.erase(open_nodes.begin());
+
+        // check if current is the objective
+        if(current->board->board == objective->board){
+            std::cout << "Objective found! exiting...: " << std::endl;
+            found = current;
+            break;
+        }
+
+        do{
+            Node* child = current->expand();
+            std::cout << "H2 of child: " << child->board->getH2(objective) << std::endl;
+            int i = 0;
+            int initial_size = open_nodes.size();
+
+            // insert ordered
+            for(std::vector<Node*>::iterator it = open_nodes.begin(); it != open_nodes.end(); it++){
+                if(child->board->getH2(objective) < (*it)->board->getH2(objective)){
+                    open_nodes.insert(it, child);
+                    std::cout << "Inserted at "<< i <<"position" << std::endl;
+                    break;
+                }
+                i += 1;
+            }
+
+            if(open_nodes.size() == initial_size){
+                open_nodes.push_back(child);
+                std::cout << "Inserted at last position" << std::endl;
+            }
+
+        }while(current->isfullyExpanded() == false);
+
+        std::cout << "size " << open_nodes.size() << std::endl;
+
+    }
+
+    open_nodes.clear();
+    delete root_copy;
 }
 
 void Tree::aStar(Board* objective){
