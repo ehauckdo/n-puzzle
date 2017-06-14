@@ -20,52 +20,97 @@ int main(int argc, char *argv[]){
 
     int k = 0;
     cout << "=================================================" << endl;
-    cout << "                     N-PUZZLE"                     << endl;
+    cout << "                  N-PUZZLE SOLVER                " << endl;
     cout << "=================================================" << endl;
     cout << endl;
 
-    cout << "Digite o tamanho do tabuleiro: ";
+    cout << "Type the number of rows/columns of your puzzle (recommended: 3): ";
 
     while((k = getInputInt()) <= 0){
-        cout << "Tamanho inválido. Por favor, digite um tamanho válido: ";
+        cout << "Invalid input. Please, insert a valid number: ";
     }
-    cout << "Tamanho escolhido: " << k << endl;
 
     Board b(k*k);
 
-    Board b2(b);
+    Board b2(&b);
+    /*Board b2(k*k);
+    b2.randomizeBoard();
+    b2.randomizeBoard();
+    b2.randomizeBoard();
+    b2.randomizeBoard();
+    b2.randomizeBoard();
+    b2.randomizeBoard();
+    b2.randomizeBoard();
+    b2.randomizeBoard();*/
     b2.doMove(MOVE_LEFT);
     b2.doMove(MOVE_LEFT);
+    b2.doMove(MOVE_DOWN);
+    b2.doMove(MOVE_RIGHT);
+    b2.doMove(MOVE_RIGHT);
+    b2.doMove(MOVE_DOWN);
 
-    cout << endl << "Tabuleiro gerado: " << endl;
+
+    cout << endl << "Generated board: " << endl;
     b.printBoard();
     cout << endl;
+
+    cout << endl << "Objective board: " << endl;
     b2.printBoard();
     cout << endl;
 
-    cout << "MENU DE OPÇÕES"    << endl;
+
+    //cout << endl << util::find(b.board, 6) << endl;
+    if(b.isSolvable(&b2))
+        cout << "IT IS!";
+    //return 0;
+
+    cout << "OPTIONS MENU"    << endl;
     cout << "1 - Backtracking"  << endl;
-    cout << "2 - Largura"       << endl;
-    cout << "3 - Profundidade"  << endl;
-    cout << "4 - Ordenada"      << endl;
-    cout << "5 - Gulosa"        << endl;
+    cout << "2 - DFS"       << endl;
+    cout << "3 - BFS"  << endl;
+    cout << "4 - Uniform Cost Search"      << endl;
+    cout << "5 - Greedy Search"        << endl;
     cout << "6 - A*"            << endl;
     cout << "7 - IDA*"          << endl;
+    cout << "8 - Check solvability" << endl;
 
-    cout << b.availableMoves().size() << endl;
-    cout << b2.availableMoves().size() << endl;
+
     Tree t(&b);
 
-    t.backTracking(&b2);
-    /*for(int i = 0; i < 4; i++){
-        t.root->expand();
-        if(t.root->isfullyExpanded() == false)
-            cout << "NOT fully expanded: " << i << endl;
-        else
-            cout << "IS fully expanded: " << i << endl;
-    }
+    //cout << "============================= " << endl;
+    //cout << "         Backtracking         " << endl;
+    //cout << "============================= " << endl;
+    //t.backTracking(&b2);
+    //cout << "----------------------------- " << endl << endl;
 
-    if(b.doMove(MOVE_RIGHT))
-        b.printBoard();*/
+    cout << "============================= " << endl;
+    cout << "             BFS              " << endl;
+    cout << "============================= " << endl;
+    t.BFS(&b2);
+    cout << "----------------------------- " << endl << endl;
+
+    cout << "============================= " << endl;
+    cout << "             DFS              " << endl;
+    cout << "============================= " << endl;
+    t.DFS(&b2);
+    cout << "----------------------------- " << endl << endl;
+
+    cout << "============================= " << endl;
+    cout << "        Greedy Search         " << endl;
+    cout << "============================= " << endl;
+    t.greedySearch(&b2);
+    cout << "----------------------------- " << endl << endl;
+
+    cout << "============================= " << endl;
+    cout << "             A*               " << endl;
+    cout << "============================= " << endl;
+    t.aStar(&b2);
+    cout << "----------------------------- " << endl << endl;
+
+    cout << "============================= " << endl;
+    cout << "            IDA*              " << endl;
+    cout << "============================= " << endl;
+    t.idaStar(&b2);
+    cout << "----------------------------- " << endl << endl;
 
 }

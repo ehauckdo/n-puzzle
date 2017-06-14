@@ -17,6 +17,8 @@ class Tree{
         void aStar(Board* objective);
         void idaStar(Board* objective);
 
+        void printPath(Node* leaf);
+
     //private:
         Node* root;
 

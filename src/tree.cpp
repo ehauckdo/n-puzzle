@@ -3,6 +3,8 @@
 #include <util.h>
 #include <iostream>
 
+#define SHOW_PATH 1
+
 
 Tree::Tree(Board* b){
     root = new Node(NULL, b, -1);
@@ -26,17 +28,19 @@ void Tree::backTracking(Board* objective){
     while(current != NULL && current->board != objective){
 
         Node* next = current->expand();
-        i++;
+        /*i++;
         if(i > 15)
-            return;
+            return;*/
 
-        next->board->printBoard();
-        std::cout << std::endl;
+
         //return;
         if(next != NULL){
 
+            next->board->printBoard();
+            std::cout << std::endl;
+
             if(util::contains(visited_states, next->board->board)){
-                //std::cout << "Already in history. Continuing...: " << std::endl;
+                std::cout << "Already in history. Continuing...: " << std::endl;
                continue;
             }
             else{
@@ -46,18 +50,19 @@ void Tree::backTracking(Board* objective){
                     break;
                 }
                 else{
-                    //std::cout << "New state! saving...: " << std::endl;
+                    std::cout << "New state! saving...: " << std::endl;
                     visited_states.push_back(next->board->board);
-                    //std::cout << "Number of states: " << visited_states.size() << std::endl;
+                    std::cout << "Number of states: " << visited_states.size() << std::endl;
                 }
             }
             current = next;
         }
 
         else{
+            std::cout << "Curret null" << std::endl;
             Node *del = current;
             current = current->parent;
-            //std::cout << "Returning to parent (id:"<< current->id<<")" << std::endl;
+            std::cout << "Returning to parent (id:"<< current->id<<")" << std::endl;
             // Node fully expanded, so free any children before returning to parent
             for(int i = 0; i < 4; i ++){
                 delete del->children[i];
@@ -68,7 +73,8 @@ void Tree::backTracking(Board* objective){
     }
 
     if(found != NULL){
-        found->board->printBoard();
+        if(SHOW_PATH)
+            printPath(found);
     }
 
 
@@ -111,7 +117,8 @@ void Tree::DFS(Board* objective){
     }
 
     if(found != NULL){
-        found->board->printBoard();
+         if(SHOW_PATH)
+            printPath(found);
     }
 
     delete root_copy;
@@ -157,7 +164,8 @@ void Tree::BFS(Board* objective){
     }
 
     if(found != NULL){
-        found->board->printBoard();
+        if(SHOW_PATH)
+            printPath(found);
     }
 
     delete root_copy;
@@ -191,7 +199,7 @@ void Tree::greedySearch(Board* objective){
 
         do{
             Node* child = current->expand();
-            std::cout << "H2 of child: " << child->board->getH2(objective) << std::endl;
+            //std::cout << "H2 of child: " << child->board->getH2(objective) << std::endl;
             int i = 0;
             int initial_size = open_nodes.size();
 
@@ -199,7 +207,7 @@ void Tree::greedySearch(Board* objective){
             for(std::vector<Node*>::iterator it = open_nodes.begin(); it != open_nodes.end(); it++){
                 if(child->board->getH2(objective) < (*it)->board->getH2(objective)){
                     open_nodes.insert(it, child);
-                    std::cout << "Inserted at "<< i <<"position" << std::endl;
+                    //std::cout << "Inserted at "<< i <<"position" << std::endl;
                     break;
                 }
                 i += 1;
@@ -207,17 +215,18 @@ void Tree::greedySearch(Board* objective){
 
             if(open_nodes.size() == initial_size){
                 open_nodes.push_back(child);
-                std::cout << "Inserted at last position" << std::endl;
+                //std::cout << "Inserted at last position" << std::endl;
             }
 
         }while(current->isfullyExpanded() == false);
 
-        std::cout << "size " << open_nodes.size() << std::endl;
+        //std::cout << "size " << open_nodes.size() << std::endl;
 
     }
 
     if(found != NULL){
-        found->board->printBoard();
+        if(SHOW_PATH)
+            printPath(found);
     }
 
     open_nodes.clear();
@@ -266,7 +275,7 @@ void Tree::aStar(Board* objective){
             int initial_size = open_nodes.size();
 
             int new_child_value = child->board->getH2(objective) + getGvalue(child, root_copy);
-            std::cout << "F(x) + g(x) of child: " << child->board->getH2(objective) << " + " << getGvalue(child, root_copy) << std::endl;
+            //std::cout << "F(x) + g(x) of child: " << child->board->getH2(objective) << " + " << getGvalue(child, root_copy) << std::endl;
             //child->board->printBoard();
             //std::cout << std::endl;
 
@@ -291,7 +300,8 @@ void Tree::aStar(Board* objective){
     }
 
     if(found != NULL){
-        found->board->printBoard();
+        if(SHOW_PATH)
+            printPath(found);
     }
 
     open_nodes.clear();
@@ -305,7 +315,7 @@ void Tree::idaStar(Board* objective){
     Node* root_copy = current;
 
     int bound = current->board->getH2(objective);
-    std::cout << "Initial bound: " << bound << std::endl;
+    //std::cout << "Initial bound: " << bound << std::endl;
     std::vector<int> old_bounds;
     std::vector<Node*> discarded;
 
@@ -318,7 +328,7 @@ void Tree::idaStar(Board* objective){
         if(next != NULL){
 
             if(next->board->board == objective->board){
-                //std::cout << "Objective found! exiting...: " << std::endl;
+                std::cout << "Objective found! exiting...: " << std::endl;
                 found = next;
                 break;
             }
@@ -328,14 +338,14 @@ void Tree::idaStar(Board* objective){
             if(new_child_value <= bound){
                 // good, keep expanding
                 current = next;
-                 std::cout << "Lower than bound, keep expanding" << std::endl;
+                //std::cout << "Lower than bound, keep expanding" << std::endl;
             }
 
             else{
                 // insert ordered
                 int initial_size = discarded.size();
                 int i = 0;
-                std::cout << "F(x) + g(x) of child: " << next->board->getH2(objective) << " + " << getGvalue(next, root_copy) << std::endl;
+                //std::cout << "F(x) + g(x) of child: " << next->board->getH2(objective) << " + " << getGvalue(next, root_copy) << std::endl;
 
                 for(std::vector<Node*>::iterator it = discarded.begin(); it != discarded.end(); it++){
                     int value = (*it)->board->getH2(objective) + getGvalue(*it, root_copy);
@@ -364,7 +374,7 @@ void Tree::idaStar(Board* objective){
             else{
                 if(discarded.size() > 0){
                     bound = discarded[0]->board->getH2(objective) + getGvalue(discarded[0], root_copy);
-                    std::cout << "New Bound(" << discarded[0]->id <<"): " << discarded[0]->board->getH2(objective) << " + " << getGvalue(discarded[0], root_copy) << std::endl;
+                    //std::cout << "New Bound(" << discarded[0]->id <<"): " << discarded[0]->board->getH2(objective) << " + " << getGvalue(discarded[0], root_copy) << std::endl;
                     discarded.clear();
                     delete root_copy;
                     current = new Node(NULL, root->board, -1);
@@ -379,7 +389,31 @@ void Tree::idaStar(Board* objective){
     }
 
     if(found != NULL){
-        found->board->printBoard();
+        if(SHOW_PATH)
+            printPath(found);
     }
 
+    delete root_copy;
+
+}
+
+void Tree::printPath(Node* leaf){
+
+        Node* traverser = leaf;
+        std::vector<Node*> path;
+
+        while(traverser != NULL){
+            path.push_back(traverser);
+            traverser = traverser->parent;
+        }
+
+        while(path.size() > 0){
+            Node* next = path.back();
+            std::cout << "Board " << next->depth << ":" << std::endl;
+            next->board->printBoard();
+            path.pop_back();
+        }
+
+    std::cout << "Final board:" << std::endl;
+    leaf->board->printBoard();
 }
