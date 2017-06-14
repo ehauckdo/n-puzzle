@@ -266,7 +266,7 @@ void Tree::aStar(Board* objective){
             int initial_size = open_nodes.size();
 
             int new_child_value = child->board->getH2(objective) + getGvalue(child, root_copy);
-            //std::cout << "F(x) + g(x) of child: " << child->board->getH2(objective) << " + " << getGvalue(child, root_copy) << std::endl;
+            std::cout << "F(x) + g(x) of child: " << child->board->getH2(objective) << " + " << getGvalue(child, root_copy) << std::endl;
             //child->board->printBoard();
             //std::cout << std::endl;
 
@@ -301,5 +301,85 @@ void Tree::aStar(Board* objective){
 
 
 void Tree::idaStar(Board* objective){
+    Node* current = new Node(NULL, root->board, -1);
+    Node* root_copy = current;
+
+    int bound = current->board->getH2(objective);
+    std::cout << "Initial bound: " << bound << std::endl;
+    std::vector<int> old_bounds;
+    std::vector<Node*> discarded;
+
+    Node* found = NULL;
+
+    while(found == NULL){
+
+        Node* next = current->expand();
+
+        if(next != NULL){
+
+            if(next->board->board == objective->board){
+                //std::cout << "Objective found! exiting...: " << std::endl;
+                found = next;
+                break;
+            }
+
+            int new_child_value = next->board->getH2(objective) + getGvalue(next, root_copy);
+
+            if(new_child_value <= bound){
+                // good, keep expanding
+                current = next;
+                 std::cout << "Lower than bound, keep expanding" << std::endl;
+            }
+
+            else{
+                // insert ordered
+                int initial_size = discarded.size();
+                int i = 0;
+                std::cout << "F(x) + g(x) of child: " << next->board->getH2(objective) << " + " << getGvalue(next, root_copy) << std::endl;
+
+                for(std::vector<Node*>::iterator it = discarded.begin(); it != discarded.end(); it++){
+                    int value = (*it)->board->getH2(objective) + getGvalue(*it, root_copy);
+                    if(new_child_value < value){
+                        discarded.insert(it, next);
+                        //std::cout << "Inserted at "<< i <<" position" << std::endl;
+                        break;
+                    }
+                    i += 1;
+                }
+
+                 if(discarded.size() == initial_size){
+                    discarded.push_back(next);
+                    //std::cout << "Inserted at last position" << std::endl;
+                }
+
+                current = next->parent;
+            }
+        }
+        else{
+            // check if the current node is not the root node
+            if(current->parent != NULL){
+                current = current->parent;
+            }
+            // if it is the root node, we need to update the bound
+            else{
+                if(discarded.size() > 0){
+                    bound = discarded[0]->board->getH2(objective) + getGvalue(discarded[0], root_copy);
+                    std::cout << "New Bound(" << discarded[0]->id <<"): " << discarded[0]->board->getH2(objective) << " + " << getGvalue(discarded[0], root_copy) << std::endl;
+                    discarded.clear();
+                    delete root_copy;
+                    current = new Node(NULL, root->board, -1);
+                    root_copy = current;
+                }
+                else{
+                    break;
+                }
+            }
+        }
+
+    }
+
+    if(found != NULL){
+        found->board->printBoard();
+    }
 
 }
