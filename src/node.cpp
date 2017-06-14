@@ -10,15 +10,23 @@ Node::Node(Node* parent, Board* b, int executedMove){
     board = new Board(b);
 
     this->parent = parent;
+    if(parent != NULL)
+        this->depth = parent->depth + 1;
+    else
+        this->depth = 0;
     lastMove = executedMove;
     availableMoves = board->availableMoves();
     id = id_counter++;
 
+
     if(lastMove != -1){
-        std::vector<int>::iterator position = std::find(availableMoves.begin(), availableMoves.end(), lastMove);
-        if (position != availableMoves.end())
-            availableMoves.erase(position);
+        int oppositeMove = util::getOppositeMove(lastMove);
+        availableMoves.erase(std::remove(availableMoves.begin(), availableMoves.end(), oppositeMove), availableMoves.end());
+        //std::vector<int>::iterator position = std::find(availableMoves.begin(), availableMoves.end(), lastMove);
+        //if (position != availableMoves.end())
+        //    availableMoves.erase(position);
     }
+
 
     for(int i = 0; i < 4; i++){
         children.push_back(NULL);
@@ -68,6 +76,7 @@ Node* Node::expand(){
 Node::~Node(){
     for(int i = 0; i < 4; i++){
         delete children[i];
+        children[i] = NULL;
     }
     delete board;
 }

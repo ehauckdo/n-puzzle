@@ -11,6 +11,7 @@ class Node{
         Board* board;
         Node* parent;
         int id;
+        int depth;
         int lastMove;
         std::vector<Node*> children;
         Node* expand(int move);
