@@ -2,6 +2,7 @@
 #include <cstddef>
 #include <util.h>
 #include <iostream>
+#include <time.h>
 
 #define SHOW_PATH 1
 
@@ -16,9 +17,13 @@ Tree::~Tree(){
 
 
 void Tree::backTracking(Board* objective){
+    clock_t begin_time = clock();
     Node* current = new Node(NULL, root->board, -1);
     Node* root_copy = current;
     int i = 0;
+
+    int expanded_nodes = 0;
+    int visited_nodes = 0;
 
     std::vector<std::vector<int> > visited_states;
     visited_states.push_back(current->board->board);
@@ -28,29 +33,23 @@ void Tree::backTracking(Board* objective){
     while(current != NULL && current->board != objective){
 
         Node* next = current->expand();
-        /*i++;
-        if(i > 15)
-            return;*/
 
-
-        //return;
         if(next != NULL){
 
-            next->board->printBoard();
-            std::cout << std::endl;
+            visited_nodes = visited_nodes + 1;
 
             if(util::contains(visited_states, next->board->board)){
-                std::cout << "Already in history. Continuing...: " << std::endl;
+                //std::cout << "Already in history. Continuing...: " << std::endl;
                continue;
             }
             else{
                 if(next->board->board == objective->board){
-                    std::cout << "Objective found! exiting...: " << std::endl;
+                    //std::cout << "Objective found! exiting...: " << std::endl;
                     found = next;
                     break;
                 }
                 else{
-                    std::cout << "New state! saving...: " << std::endl;
+                    //std::cout << "New state! saving...: " << std::endl;
                     visited_states.push_back(next->board->board);
                     std::cout << "Number of states: " << visited_states.size() << std::endl;
                 }
@@ -59,7 +58,7 @@ void Tree::backTracking(Board* objective){
         }
 
         else{
-            std::cout << "Curret null" << std::endl;
+            //std::cout << "Curret null" << std::endl;
             Node *del = current;
             current = current->parent;
             std::cout << "Returning to parent (id:"<< current->id<<")" << std::endl;
@@ -69,22 +68,31 @@ void Tree::backTracking(Board* objective){
                 del->children[i] = NULL;
             }
 
+            expanded_nodes = expanded_nodes + 1;
+
         }
     }
 
     if(found != NULL){
+        std::cout << "Depth of solution: " << found->depth << std::endl;
+        std::cout << "Expanded nodes: " << expanded_nodes << std::endl;
+        std::cout << "Visited nodes: " << visited_nodes << std::endl;
+        std::cout << "Execution time: " << 1000*float(clock()-begin_time)/CLOCKS_PER_SEC << "ms"<< std::endl;
         if(SHOW_PATH)
             printPath(found);
     }
-
 
     delete root_copy;
 
 }
 
 void Tree::DFS(Board* objective){
+    clock_t begin_time = clock();
     Node* current = new Node(NULL, root->board, -1);
     Node* root_copy = current;
+
+    int expanded_nodes = 0;
+    int visited_nodes = 0;
 
     std::vector<std::vector<int> > visited_states;
     std::vector<Node*> open_nodes;
@@ -96,6 +104,8 @@ void Tree::DFS(Board* objective){
 
         current = open_nodes.back();
         open_nodes.pop_back();
+
+        visited_nodes = visited_nodes + 1;
 
          if(current->board->board == objective->board){
             std::cout << "Objective found! exiting...: " << std::endl;
@@ -114,9 +124,15 @@ void Tree::DFS(Board* objective){
             //child->board->printBoard();
         }while(next->isfullyExpanded() == false);
 
+        expanded_nodes += 1;
+
     }
 
     if(found != NULL){
+        std::cout << "Depth of solution: " << found->depth << std::endl;
+        std::cout << "Expanded nodes: " << expanded_nodes << std::endl;
+        std::cout << "Visited nodes: " << visited_nodes << std::endl;
+        std::cout << "Execution time: " << 1000*float(clock()-begin_time)/CLOCKS_PER_SEC << "ms"<< std::endl;
          if(SHOW_PATH)
             printPath(found);
     }
@@ -126,8 +142,12 @@ void Tree::DFS(Board* objective){
 }
 
 void Tree::BFS(Board* objective){
+    clock_t begin_time = clock();
     Node* current = new Node(NULL, root->board, -1);
     Node* root_copy = current;
+
+    int expanded_nodes = 0;
+    int visited_nodes = 0;
 
     std::vector<std::vector<int> > visited_states;
     std::vector<Node*> open_nodes;
@@ -138,6 +158,7 @@ void Tree::BFS(Board* objective){
     while(open_nodes.size() > 0 && current != NULL){
 
         current = open_nodes.front();
+        visited_nodes = visited_nodes + 1;
 
         // check if current is the objective
         if(current->board->board == objective->board){
@@ -159,11 +180,17 @@ void Tree::BFS(Board* objective){
             //child->board->printBoard();
         }while(next->isfullyExpanded() == false);
 
+        expanded_nodes += 1;
+
         open_nodes.erase(open_nodes.begin());
 
     }
 
     if(found != NULL){
+        std::cout << "Depth of solution: " << found->depth << std::endl;
+        std::cout << "Expanded nodes: " << expanded_nodes << std::endl;
+        std::cout << "Visited nodes: " << visited_nodes << std::endl;
+        std::cout << "Execution time: " << 1000*float(clock()-begin_time)/CLOCKS_PER_SEC << "ms"<< std::endl;
         if(SHOW_PATH)
             printPath(found);
     }
@@ -177,8 +204,12 @@ void Tree::uniformCostSearch(Board* objective){
 }
 
 void Tree::greedySearch(Board* objective){
+    clock_t begin_time = clock();
     Node* current = new Node(NULL, root->board, -1);
     Node* root_copy = current;
+
+    int expanded_nodes = 0;
+    int visited_nodes = 0;
 
     std::vector<Node*> open_nodes;
 
@@ -189,6 +220,8 @@ void Tree::greedySearch(Board* objective){
 
         current = open_nodes.front();
         open_nodes.erase(open_nodes.begin());
+
+        visited_nodes = visited_nodes + 1;
 
         // check if current is the objective
         if(current->board->board == objective->board){
@@ -220,11 +253,17 @@ void Tree::greedySearch(Board* objective){
 
         }while(current->isfullyExpanded() == false);
 
+        expanded_nodes = expanded_nodes + 1;
+
         //std::cout << "size " << open_nodes.size() << std::endl;
 
     }
 
     if(found != NULL){
+        std::cout << "Depth of solution: " << found->depth << std::endl;
+        std::cout << "Expanded nodes: " << expanded_nodes << std::endl;
+        std::cout << "Visited nodes: " << visited_nodes << std::endl;
+        std::cout << "Execution time: " << 1000*float(clock()-begin_time)/CLOCKS_PER_SEC << "ms"<< std::endl;
         if(SHOW_PATH)
             printPath(found);
     }
@@ -244,8 +283,12 @@ int getGvalue(Node* node, Node* root){
 }
 
 void Tree::aStar(Board* objective){
+    clock_t begin_time = clock();
     Node* current = new Node(NULL, root->board, -1);
     Node* root_copy = current;
+
+    int expanded_nodes = 0;
+    int visited_nodes = 0;
 
     //std::cout << "ROOT:" << std::endl;
     //root_copy->board->printBoard();
@@ -260,6 +303,8 @@ void Tree::aStar(Board* objective){
 
         current = open_nodes.front();
         open_nodes.erase(open_nodes.begin());
+
+        visited_nodes = visited_nodes + 1;
 
         // check if current is the objective
         if(current->board->board == objective->board){
@@ -297,9 +342,15 @@ void Tree::aStar(Board* objective){
 
         }while(current->isfullyExpanded() == false);
 
+        expanded_nodes = expanded_nodes + 1;
+
     }
 
     if(found != NULL){
+        std::cout << "Depth of solution: " << found->depth << std::endl;
+        std::cout << "Expanded nodes: " << expanded_nodes << std::endl;
+        std::cout << "Visited nodes: " << visited_nodes << std::endl;
+        std::cout << "Execution time: " << 1000*float(clock()-begin_time)/CLOCKS_PER_SEC << "ms"<< std::endl;
         if(SHOW_PATH)
             printPath(found);
     }
@@ -311,13 +362,19 @@ void Tree::aStar(Board* objective){
 
 
 void Tree::idaStar(Board* objective){
+    clock_t begin_time = clock();
     Node* current = new Node(NULL, root->board, -1);
     Node* root_copy = current;
 
-    int bound = current->board->getH2(objective);
+    int expanded_nodes = 0;
+    int visited_nodes = 0;
+
     //std::cout << "Initial bound: " << bound << std::endl;
     std::vector<int> old_bounds;
     std::vector<Node*> discarded;
+
+    int bound = current->board->getH2(objective);
+    old_bounds.push_back(bound);
 
     Node* found = NULL;
 
@@ -326,6 +383,8 @@ void Tree::idaStar(Board* objective){
         Node* next = current->expand();
 
         if(next != NULL){
+
+            visited_nodes = visited_nodes + 1;
 
             if(next->board->board == objective->board){
                 std::cout << "Objective found! exiting...: " << std::endl;
@@ -369,11 +428,13 @@ void Tree::idaStar(Board* objective){
             // check if the current node is not the root node
             if(current->parent != NULL){
                 current = current->parent;
+                expanded_nodes = expanded_nodes + 1;
             }
             // if it is the root node, we need to update the bound
             else{
                 if(discarded.size() > 0){
                     bound = discarded[0]->board->getH2(objective) + getGvalue(discarded[0], root_copy);
+                    old_bounds.push_back(bound);
                     //std::cout << "New Bound(" << discarded[0]->id <<"): " << discarded[0]->board->getH2(objective) << " + " << getGvalue(discarded[0], root_copy) << std::endl;
                     discarded.clear();
                     delete root_copy;
@@ -389,6 +450,14 @@ void Tree::idaStar(Board* objective){
     }
 
     if(found != NULL){
+        std::cout << "Depth of solution: " << found->depth << std::endl;
+        std::cout << "Expanded nodes: " << expanded_nodes << std::endl;
+        std::cout << "Visited nodes: " << visited_nodes << std::endl;
+        std::cout << "Execution time: " << 1000*float(clock()-begin_time)/CLOCKS_PER_SEC << "ms"<< std::endl;
+        std::cout << "Old bounds: ";
+        for(std::vector<int>::iterator it = old_bounds.begin(); it != old_bounds.end(); it++)
+            std::cout << *it << " ";
+        std::cout << std::endl;
         if(SHOW_PATH)
             printPath(found);
     }
@@ -399,21 +468,18 @@ void Tree::idaStar(Board* objective){
 
 void Tree::printPath(Node* leaf){
 
-        Node* traverser = leaf;
-        std::vector<Node*> path;
+    Node* traverser = leaf;
+    std::vector<Node*> path;
 
-        while(traverser != NULL){
-            path.push_back(traverser);
-            traverser = traverser->parent;
-        }
+    while(traverser->parent != NULL){
+        path.push_back(traverser);
+        traverser = traverser->parent;
+    }
 
-        while(path.size() > 0){
-            Node* next = path.back();
-            std::cout << "Board " << next->depth << ":" << std::endl;
-            next->board->printBoard();
-            path.pop_back();
-        }
+    while(path.size() > 0){
+        Node* next = path.back();
+        std::cout << "Move " << next->depth << ":" << util::getMoveName(next->lastMove) << std::endl;
+        path.pop_back();
+    }
 
-    std::cout << "Final board:" << std::endl;
-    leaf->board->printBoard();
 }
