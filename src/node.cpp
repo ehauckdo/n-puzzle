@@ -43,6 +43,16 @@ bool Node::isfullyExpanded(){
     return true;
 }
 
+bool Node::isAncestral(Board* b){
+    Node *current = this;
+    while(current != NULL){
+        if(current->board->board == b->board)
+            return true;
+        current = current->parent;
+    }
+    return false;
+}
+
 Node* Node::expand(int move){
     if(!util::contains(availableMoves, move) || children[move] != NULL)
         return NULL;

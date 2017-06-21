@@ -17,6 +17,7 @@ class Node{
         Node* expand(int move);
         Node* expand();
         bool isfullyExpanded();
+        bool isAncestral(Board* b);
         std::vector<int> availableMoves;
 
         static int id_counter;
