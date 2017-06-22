@@ -15,7 +15,6 @@ Tree::~Tree(){
     delete root;
 }
 
-
 void Tree::backTracking(Board* objective){
     clock_t begin_time = clock();
     Node* current = new Node(NULL, root->board, -1);
@@ -38,22 +37,28 @@ void Tree::backTracking(Board* objective){
 
             visited_nodes = visited_nodes + 1;
 
-            if(util::contains(visited_states, next->board->board)){
+            //if(util::contains(visited_states, next->board->board)){
                 //std::cout << "Already in history. Continuing...: " << std::endl;
-               continue;
+            //   continue;
+            //}
+            //else{
+            if(next->parent->isAncestral(next->board)){
+                std::cout << "Already in ancestral. Continuing...: " << std::endl;
+                continue;
             }
             else{
                 if(next->board->board == objective->board){
-                    //std::cout << "Objective found! exiting...: " << std::endl;
+                    std::cout << "Objective found! exiting...: " << std::endl;
                     found = next;
                     break;
                 }
-                else{
+                //else{
                     //std::cout << "New state! saving...: " << std::endl;
-                    visited_states.push_back(next->board->board);
-                    std::cout << "Number of states: " << visited_states.size() << std::endl;
-                }
+                    //visited_states.push_back(next->board->board);
+                    //std::cout << "Number of states: " << visited_states.size() << std::endl;
+                //}
             }
+
             current = next;
         }
 
@@ -61,7 +66,7 @@ void Tree::backTracking(Board* objective){
             //std::cout << "Curret null" << std::endl;
             Node *del = current;
             current = current->parent;
-            std::cout << "Returning to parent (id:"<< current->id<<")" << std::endl;
+            std::cout << "Returning to parent (id:"<< current->id<<", depth: "<<current->depth <<")" << std::endl;
             // Node fully expanded, so free any children before returning to parent
             for(int i = 0; i < 4; i ++){
                 delete del->children[i];
