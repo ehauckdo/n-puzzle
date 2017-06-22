@@ -1,5 +1,6 @@
 #include <vector>
 #include <string>
+#include <node.h>
 
 namespace util{
 
@@ -10,4 +11,7 @@ namespace util{
     bool contains(std::vector<int> v, int element);
     bool contains(std::vector<std::vector<int> > v, std::vector<int> element);
     int find(std::vector<int> v, int element);
+    int getOppositeMove(int move);
+    std::string getMoveName(int move);
+    int insertOrdered(Node* node, std::vector<Node*>* myvector, Board* objective);
 }

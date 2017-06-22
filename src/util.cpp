@@ -2,6 +2,12 @@
 #include <sstream>
 #include <vector>
 #include <algorithm>
+#include <node.h>
+
+#define MOVE_UP 0
+#define MOVE_DOWN 1
+#define MOVE_LEFT 2
+#define MOVE_RIGHT 3
 
 namespace util{
 
@@ -54,6 +60,51 @@ namespace util{
             return std::distance(v.begin(), it);
         else
             return -1;
+    }
+
+    int getOppositeMove(int move){
+        if(move == MOVE_UP)
+            return MOVE_DOWN;
+        else if(move == MOVE_DOWN)
+            return MOVE_UP;
+        else if(move == MOVE_LEFT)
+            return MOVE_RIGHT;
+        else if(move == MOVE_RIGHT)
+            return MOVE_LEFT;
+        else return -1;
+    }
+
+    std::string getMoveName(int move){
+        switch(move){
+            case MOVE_UP: return "MOVE_UP";
+            case MOVE_DOWN: return "MOVE_DOWN";
+            case MOVE_LEFT: return "MOVE_LEFT";
+            case MOVE_RIGHT: return "MOVE_RIGHT";
+            default: return "Invalido Move";
+        }
+
+    }
+
+    int insertOrdered(Node* node, std::vector<Node*>* myvector, Board* objective){
+        std::cout << "Current: " << node->board->getH2(objective) << std::endl;
+        int initial_size = myvector->size();
+        int i = 0;
+        for(std::vector<Node*>::iterator it = myvector->begin(); it != myvector->end(); it++){
+            if(node->board->getH2(objective) < (*it)->board->getH2(objective)){
+                myvector->insert(it, node);
+                std::cout << "Discarded at "<< i <<" position, H2: " << (*it)->board->getH2(objective) << std::endl;
+                break;
+            }
+            i = i + 1;
+        }
+
+        if(myvector->size() == initial_size){
+            if(initial_size != 0)
+                std::cout << "Inserted at last ("<< i<<") position, H2: " << (*myvector)[initial_size-1]->board->getH2(objective) << std::endl;
+            else
+                std::cout << "Inserted at last ("<< i<<") position, H2: " << std::endl;
+            myvector->push_back(node);
+        }
     }
 
 }
