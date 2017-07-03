@@ -25,30 +25,19 @@ int main(int argc, char *argv[]){
     cout << endl;
 
     cout << "Type the number of rows/columns of your puzzle (recommended: 3): ";
-
     while((k = getInputInt()) <= 0){
         cout << "Invalid input. Please, insert a valid number: ";
     }
 
     Board b(k*k);
-
     Board b2(&b);
-    /*Board b2(k*k);
-    b2.randomizeBoard();
-    b2.randomizeBoard();
-    b2.randomizeBoard();
-    b2.randomizeBoard();
-    b2.randomizeBoard();
-    b2.randomizeBoard();
-    b2.randomizeBoard();
-    b2.randomizeBoard();*/
-    b2.doMove(MOVE_LEFT);
-    b2.doMove(MOVE_LEFT);
-    b2.doMove(MOVE_DOWN);
-    b2.doMove(MOVE_RIGHT);
-    b2.doMove(MOVE_RIGHT);
-    b2.doMove(MOVE_DOWN);
 
+    cout << "Type a number of movements to randomize the board (recommended: 10~20): ";
+    while((k = getInputInt()) <= 0){
+        cout << "Invalid input. Please, insert a valid number: ";
+    }
+
+    b2.randomizeBoard(k);
 
     cout << endl << "Generated board: " << endl;
     b.printBoard();
@@ -58,30 +47,14 @@ int main(int argc, char *argv[]){
     b2.printBoard();
     cout << endl;
 
-
-    //cout << endl << util::find(b.board, 6) << endl;
-    if(b.isSolvable(&b2))
-        cout << "IT IS!";
-    //return 0;
-
-    cout << "OPTIONS MENU"    << endl;
-    cout << "1 - Backtracking"  << endl;
-    cout << "2 - DFS"       << endl;
-    cout << "3 - BFS"  << endl;
-    cout << "4 - Uniform Cost Search"      << endl;
-    cout << "5 - Greedy Search"        << endl;
-    cout << "6 - A*"            << endl;
-    cout << "7 - IDA*"          << endl;
-    cout << "8 - Check solvability" << endl;
-
-
     Tree t(&b);
 
-    //cout << "============================= " << endl;
-    //cout << "         Backtracking         " << endl;
-    //cout << "============================= " << endl;
-    //t.backTracking(&b2);
-    //cout << "----------------------------- " << endl << endl;
+    cout << "============================= " << endl;
+    cout << "         Backtracking         " << endl;
+    cout << "============================= " << endl;
+    if(k < 25)
+        t.backTracking(&b2);
+    cout << "----------------------------- " << endl << endl;
 
     cout << "============================= " << endl;
     cout << "             BFS              " << endl;
@@ -93,6 +66,12 @@ int main(int argc, char *argv[]){
     cout << "             DFS              " << endl;
     cout << "============================= " << endl;
     t.DFS(&b2);
+    cout << "----------------------------- " << endl << endl;
+
+    cout << "============================= " << endl;
+    cout << "      Uniform Cost Search     " << endl;
+    cout << "============================= " << endl;
+    t.uniformCostSearch(&b2);
     cout << "----------------------------- " << endl << endl;
 
     cout << "============================= " << endl;

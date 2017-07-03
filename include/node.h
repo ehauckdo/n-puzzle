@@ -13,14 +13,15 @@ class Node{
         int id;
         int depth;
         int lastMove;
+        static int id_counter;
         std::vector<Node*> children;
+        std::vector<int> availableMoves;
         Node* expand(int move);
         Node* expand();
         bool isfullyExpanded();
         bool isAncestral(Board* b);
-        std::vector<int> availableMoves;
+        int getChildren(Node* current_node, int num_children);
 
-        static int id_counter;
 };
 
 #endif // NODE_H_INCLUDED

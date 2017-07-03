@@ -82,6 +82,25 @@ Node* Node::expand(){
     return children[next_move];
 }
 
+int Node::getChildren(Node* current_node, int num_children){
+    //for(std::vector<int>::iterator it = availableMoves.begin(); it != availableMoves.end(); it++){
+    //std::cout << "Checking node " << current_node->id << std::endl;
+    int number_of_children = 0;
+    int received_from_children = 0;
+    for(int i = 0; i < 4; i++){
+        if(current_node->children[i] != NULL){
+            number_of_children += 1;
+            received_from_children += getChildren(current_node->children[i], num_children);
+        }
+    }
+
+    //std::cout << "Number of children at node " << current_node->id << ": " << number_of_children << std::endl;
+    //std::cout << "Received from children at node "<< current_node->id <<": " << received_from_children << std::endl;
+    num_children += number_of_children + received_from_children;
+
+    return num_children;
+}
+
 
 Node::~Node(){
     for(int i = 0; i < 4; i++){

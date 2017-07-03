@@ -9,7 +9,8 @@
 Board::Board(const int size){
     board_size = size;
     board.resize(board_size);
-    randomizeBoard();
+    //randomizeBoard();
+    resetBoard();
 }
 
 Board::Board(Board* b){
@@ -20,25 +21,40 @@ Board::Board(Board* b){
 
 void Board::resetBoard(){
     for(int i = 0; i < board_size; i++){
-        board[i] = 0;
+        board[i] = i+1;
     }
+    board[board_size-1] = 0;
+    current_pos = board_size-1;
 }
 
-void Board::randomizeBoard(){
-    int k;
-    int verify[board_size];
-    for(int i = 0; i < board_size; i++){
-        verify[i]=0;
-    }
+void Board::randomizeBoard(int k){
+    //int k;
+    //int verify[board_size];
+    //for(int i = 0; i < board_size; i++){
+    //    verify[i]=0;
+    //}
 
-    for(int i = 0; i < board_size; i++){
+    //for(int i = 0; i < board_size; i++){
+    //    do{
+    //        k = rand() % board_size;
+    //    }while(verify[k] == 1);
+    //    board[i] = k;
+    //    verify[k] = 1;
+    //    if(k == 0)
+    //        current_pos = i;
+    //}
+    srand(4);
+    //int moves = 100;
+    int last_move = -1;
+    int next_move = -1;
+    for(int i = 0; i < k; i++){
         do{
-            k = rand() % board_size;
-        }while(verify[k] == 1);
-        board[i] = k;
-        verify[k] = 1;
-        if(k == 0)
-            current_pos = i;
+            next_move = rand() % 4;
+            //std::cout << "Move: " << util::getMoveName(next_move) << ", Opposite: " << util::getOppositeMove(last_move) << std::endl;
+        }while(next_move == util::getOppositeMove(last_move));
+        doMove(next_move);
+        last_move = next_move;
+        //std::cout << "Decided: " << util::getMoveName(next_move) << std::endl;
     }
 
 }
@@ -60,7 +76,8 @@ std::vector<int> Board::availableMoves(){
 
     // get 0 position
     std::pair<int, int> matrix_pos = util::getArrayToMatrixIndex(current_pos, k);
-//    std::cout  << "MATRIX POS:" << matrix_pos.first << ", " << matrix_pos.second << std::endl;
+    //printBoard();
+    //std::cout  << "MATRIX POS:" << matrix_pos.first << ", " << matrix_pos.second << std::endl;
 
     // check MOVE_UP
     if(matrix_pos.first - 1 >= 0)
@@ -77,6 +94,12 @@ std::vector<int> Board::availableMoves(){
     // check MOVE_RIGHT
     if(matrix_pos.second + 1 <= k-1)
         moves.push_back(MOVE_RIGHT);
+
+    //for(int i = 0; i < moves.size(); i++){
+    //    std::cout << util::getMoveName(moves[i]) << std::endl;
+    //}
+
+
 
     return moves;
 }
@@ -122,62 +145,6 @@ bool Board::doMove(int move){
     current_pos = index_to_change;
 //    std::cout << "index to change:" << index_to_change << std::endl;
     return true;
-}
-
-bool Board::isSolvable(Board* target){
-
-    int k = sqrt(board_size);
-    int total_inversions = getInversionCount(target);
-
-    if(k % 2 != 0){
-        if(total_inversions % 2 == 0)
-            return true;
-        else
-            return false;
-    }
-    else{
-        if(current_pos % 2 == 0 && total_inversions % 2 == 1)
-            return true;
-        if(current_pos % 2 == 1 && total_inversions % 2 == 0)
-            return true;
-        return false;
-    }
-
-}
-
-int Board::getInversionCount(Board* target){
-    int total_inversions = 0;
-
-    for(std::vector<int>::iterator it = this->board.begin(); it != this->board.end(); it++){
-        int src_number = *it;
-        int src_index = std::distance(this->board.begin(), it);
-        int tgt_index = util::find(target->board, src_number);
-
-        if(src_number == 0)
-            continue;
-
-        //std::cout << "src_number: " << *it << ",src_index: " << src_index << ",tgt_index: " << tgt_index << std::endl;
-
-        // number not found in target, malformed board
-        if(tgt_index == -1)
-            return false;
-
-        for(int i = 0; i < tgt_index; i++){
-            bool found = false;
-            for(int j = 0; j < src_index; j++){
-                if(target->board[i] == this->board[j]){
-                    found = true;
-                    break;
-                }
-            }
-            if(found == false && target->board[i] != 0)
-                total_inversions += 1;
-        }
-        //std::cout << "total_inversion: " << total_inversions << std::endl;
-
-    }
-
-    return total_inversions;
 }
 
 int Board::getH1(Board* target){

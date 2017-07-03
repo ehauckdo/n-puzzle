@@ -85,6 +85,17 @@ namespace util{
 
     }
 
+    std::string getMoveSymbol(int move){
+        switch(move){
+            case MOVE_UP: return "↑";
+            case MOVE_DOWN: return "↓";
+            case MOVE_LEFT: return "←";
+            case MOVE_RIGHT: return "→";
+            default: return "Invalido Move";
+        }
+
+    }
+
     int insertOrdered(Node* node, std::vector<Node*>* myvector, Board* objective){
         std::cout << "Current: " << node->board->getH2(objective) << std::endl;
         int initial_size = myvector->size();

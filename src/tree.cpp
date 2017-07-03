@@ -19,7 +19,6 @@ void Tree::backTracking(Board* objective){
     clock_t begin_time = clock();
     Node* current = new Node(NULL, root->board, -1);
     Node* root_copy = current;
-    int i = 0;
 
     int expanded_nodes = 0;
     int visited_nodes = 0;
@@ -43,12 +42,12 @@ void Tree::backTracking(Board* objective){
             //}
             //else{
             if(next->parent->isAncestral(next->board)){
-                std::cout << "Already in ancestral. Continuing...: " << std::endl;
+                //std::cout << "Already in ancestral. Continuing...: " << std::endl;
                 continue;
             }
             else{
                 if(next->board->board == objective->board){
-                    std::cout << "Objective found! exiting...: " << std::endl;
+                    //std::cout << "Objective found! exiting...: " << std::endl;
                     found = next;
                     break;
                 }
@@ -66,7 +65,7 @@ void Tree::backTracking(Board* objective){
             //std::cout << "Curret null" << std::endl;
             Node *del = current;
             current = current->parent;
-            std::cout << "Returning to parent (id:"<< current->id<<", depth: "<<current->depth <<")" << std::endl;
+            //=std::cout << "Returning to parent (id:"<< current->id<<", depth: "<<current->depth <<")" << std::endl;
             // Node fully expanded, so free any children before returning to parent
             for(int i = 0; i < 4; i ++){
                 delete del->children[i];
@@ -82,6 +81,7 @@ void Tree::backTracking(Board* objective){
         std::cout << "Depth of solution: " << found->depth << std::endl;
         std::cout << "Expanded nodes: " << expanded_nodes << std::endl;
         std::cout << "Visited nodes: " << visited_nodes << std::endl;
+        std::cout << "Branching factor: " << root_copy->getChildren(root_copy, 0) / (double)found->depth << std::endl;
         std::cout << "Execution time: " << 1000*float(clock()-begin_time)/CLOCKS_PER_SEC << "ms"<< std::endl;
         if(SHOW_PATH)
             printPath(found);
@@ -91,7 +91,9 @@ void Tree::backTracking(Board* objective){
 
 }
 
-void Tree::DFS(Board* objective){
+void Tree::DFS(Board* objective, int limit){
+    std::cout << "limit " << limit << std::endl;
+
     clock_t begin_time = clock();
     Node* current = new Node(NULL, root->board, -1);
     Node* root_copy = current;
@@ -122,14 +124,19 @@ void Tree::DFS(Board* objective){
         //std::cout << "Current: " << std::endl;
         //next->board->printBoard();
         //std::cout << std::endl;
-        do{
-            Node* child = next->expand();
-            open_nodes.push_back(child);
-            //std::cout << "Inserting: " << std::endl;
-            //child->board->printBoard();
-        }while(next->isfullyExpanded() == false);
+        if(next->depth < limit){
+            do{
+                Node* child = next->expand();
+                open_nodes.push_back(child);
+                //std::cout << "Inserting: " << std::endl;
+                //child->board->printBoard();
+            }while(next->isfullyExpanded() == false);
 
         expanded_nodes += 1;
+        }
+        else{
+            //std::cout << "Limit reached at node " << next->id << std::endl;
+        }
 
     }
 
@@ -137,6 +144,7 @@ void Tree::DFS(Board* objective){
         std::cout << "Depth of solution: " << found->depth << std::endl;
         std::cout << "Expanded nodes: " << expanded_nodes << std::endl;
         std::cout << "Visited nodes: " << visited_nodes << std::endl;
+        std::cout << "Branching factor: " << root_copy->getChildren(root_copy, 0) / (double)found->depth << std::endl;
         std::cout << "Execution time: " << 1000*float(clock()-begin_time)/CLOCKS_PER_SEC << "ms"<< std::endl;
          if(SHOW_PATH)
             printPath(found);
@@ -195,6 +203,7 @@ void Tree::BFS(Board* objective){
         std::cout << "Depth of solution: " << found->depth << std::endl;
         std::cout << "Expanded nodes: " << expanded_nodes << std::endl;
         std::cout << "Visited nodes: " << visited_nodes << std::endl;
+        std::cout << "Branching factor: " << root_copy->getChildren(root_copy, 0) / (double)found->depth << std::endl;
         std::cout << "Execution time: " << 1000*float(clock()-begin_time)/CLOCKS_PER_SEC << "ms"<< std::endl;
         if(SHOW_PATH)
             printPath(found);
@@ -205,7 +214,7 @@ void Tree::BFS(Board* objective){
 }
 
 void Tree::uniformCostSearch(Board* objective){
-    DFS(objective);
+    BFS(objective);
 }
 
 void Tree::greedySearch(Board* objective){
@@ -227,6 +236,8 @@ void Tree::greedySearch(Board* objective){
         open_nodes.erase(open_nodes.begin());
 
         visited_nodes = visited_nodes + 1;
+
+        //std::cout << "Current H2: " << current->board->getH2(objective) << std::endl;
 
         // check if current is the objective
         if(current->board->board == objective->board){
@@ -268,6 +279,7 @@ void Tree::greedySearch(Board* objective){
         std::cout << "Depth of solution: " << found->depth << std::endl;
         std::cout << "Expanded nodes: " << expanded_nodes << std::endl;
         std::cout << "Visited nodes: " << visited_nodes << std::endl;
+        std::cout << "Branching factor: " << root_copy->getChildren(root_copy, 0) / (double)found->depth << std::endl;
         std::cout << "Execution time: " << 1000*float(clock()-begin_time)/CLOCKS_PER_SEC << "ms"<< std::endl;
         if(SHOW_PATH)
             printPath(found);
@@ -355,6 +367,7 @@ void Tree::aStar(Board* objective){
         std::cout << "Depth of solution: " << found->depth << std::endl;
         std::cout << "Expanded nodes: " << expanded_nodes << std::endl;
         std::cout << "Visited nodes: " << visited_nodes << std::endl;
+        std::cout << "Branching factor: " << root_copy->getChildren(root_copy, 0) / (double)found->depth << std::endl;
         std::cout << "Execution time: " << 1000*float(clock()-begin_time)/CLOCKS_PER_SEC << "ms"<< std::endl;
         if(SHOW_PATH)
             printPath(found);
@@ -458,6 +471,7 @@ void Tree::idaStar(Board* objective){
         std::cout << "Depth of solution: " << found->depth << std::endl;
         std::cout << "Expanded nodes: " << expanded_nodes << std::endl;
         std::cout << "Visited nodes: " << visited_nodes << std::endl;
+        std::cout << "Branching factor: " << root_copy->getChildren(root_copy, 0) / (double)found->depth << std::endl;
         std::cout << "Execution time: " << 1000*float(clock()-begin_time)/CLOCKS_PER_SEC << "ms"<< std::endl;
         std::cout << "Old bounds: ";
         for(std::vector<int>::iterator it = old_bounds.begin(); it != old_bounds.end(); it++)
@@ -483,8 +497,11 @@ void Tree::printPath(Node* leaf){
 
     while(path.size() > 0){
         Node* next = path.back();
-        std::cout << "Move " << next->depth << ":" << util::getMoveName(next->lastMove) << std::endl;
+        //std::cout << "Move " << next->depth << ":" << util::getMoveName(next->lastMove) << std::endl;
+        std::cout << util::getMoveSymbol(next->lastMove) << " ";
         path.pop_back();
     }
+    std::cout << std::endl;
+
 
 }

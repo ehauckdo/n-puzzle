@@ -19,16 +19,13 @@ class Board{
         ~Board();
 
         void printBoard();
-        void randomizeBoard();
+        void randomizeBoard(int k);
         void resetBoard();
         bool doMove(int move);
         std::vector<int> availableMoves();
-        bool isSolvable(Board* target);
         int getH1(Board* target);
         int getH2(Board* target);
 
-    private:
-        int getInversionCount(Board* target);
 };
 
 #endif // BOARD_H_INCLUDED

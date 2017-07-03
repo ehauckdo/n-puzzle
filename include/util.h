@@ -13,5 +13,6 @@ namespace util{
     int find(std::vector<int> v, int element);
     int getOppositeMove(int move);
     std::string getMoveName(int move);
+    std::string getMoveSymbol(int move);
     int insertOrdered(Node* node, std::vector<Node*>* myvector, Board* objective);
 }

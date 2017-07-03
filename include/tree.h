@@ -10,7 +10,7 @@ class Tree{
         ~Tree();
 
         void backTracking(Board* objective);
-        void DFS(Board* objective);
+        void DFS(Board* objective, int limit = 25);
         void BFS(Board* objective);
         void uniformCostSearch(Board* objective);
         void greedySearch(Board* objective);
