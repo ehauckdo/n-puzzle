@@ -337,14 +337,15 @@ void Tree::aStar(Board* objective){
             int initial_size = open_nodes.size();
 
             int new_child_value = child->board->getH2(objective) + getGvalue(child, root_copy);
+            child->value = new_child_value;
             //std::cout << "F(x) + g(x) of child: " << child->board->getH2(objective) << " + " << getGvalue(child, root_copy) << std::endl;
             //child->board->printBoard();
             //std::cout << std::endl;
 
             // insert ordered
             for(std::vector<Node*>::iterator it = open_nodes.begin(); it != open_nodes.end(); it++){
-                int value = (*it)->board->getH2(objective) + getGvalue(*it, root_copy);
-                if(new_child_value < value){
+                //int value = (*it)->board->getH2(objective) + getGvalue(*it, root_copy);
+                if(new_child_value < (*it)->value){
                     open_nodes.insert(it, child);
                     //std::cout << "Inserted at "<< i <<" position" << std::endl;
                     break;
@@ -411,6 +412,7 @@ void Tree::idaStar(Board* objective){
             }
 
             int new_child_value = next->board->getH2(objective) + getGvalue(next, root_copy);
+            next->value = new_child_value;
 
             if(new_child_value <= bound){
                 // good, keep expanding
@@ -425,8 +427,8 @@ void Tree::idaStar(Board* objective){
                 //std::cout << "F(x) + g(x) of child: " << next->board->getH2(objective) << " + " << getGvalue(next, root_copy) << std::endl;
 
                 for(std::vector<Node*>::iterator it = discarded.begin(); it != discarded.end(); it++){
-                    int value = (*it)->board->getH2(objective) + getGvalue(*it, root_copy);
-                    if(new_child_value < value){
+                    //int value = (*it)->board->getH2(objective) + getGvalue(*it, root_copy);
+                    if(new_child_value < (*it)->value){
                         discarded.insert(it, next);
                         //std::cout << "Inserted at "<< i <<" position" << std::endl;
                         break;

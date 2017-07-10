@@ -31,6 +31,8 @@ Node::Node(Node* parent, Board* b, int executedMove){
     for(int i = 0; i < 4; i++){
         children.push_back(NULL);
     }
+
+    value = 0;
 }
 
 bool Node::isfullyExpanded(){

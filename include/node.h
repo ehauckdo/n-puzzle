@@ -13,6 +13,7 @@ class Node{
         int id;
         int depth;
         int lastMove;
+        double value;
         static int id_counter;
         std::vector<Node*> children;
         std::vector<int> availableMoves;
