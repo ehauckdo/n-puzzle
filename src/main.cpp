@@ -2,37 +2,46 @@
 #include <util.h>
 #include <board.h>
 #include <tree.h>
+#include <getopt.h>
+#include <stdio.h>  /* EOF */
+#include <stdlib.h> /* atoi */
 
 using namespace util;
 using namespace std;
 
 int main(int argc, char *argv[]){
 
-    cout << argc << endl;
-    for(int i = 0; i < argc; i++){
-        cout << argv[i] << endl;
+    int opt, s = 3, m = 10;
+    while ((opt = getopt(argc,argv,"hs:m:")) != EOF)
+    switch(opt)
+    {
+        case 's':
+            s = atoi(optarg);
+            break;
+
+        case 'm':
+            m = atoi(optarg);
+            break;
+
+        default:
+        case 'h':
+            cout << endl << "usuage: ./n-puzzle [options]" << endl;
+            cout << endl << "\tOptions:" << endl;
+            cout << "\t-s Size: length and width of board in blocks" << endl;
+            cout << "\t-m Movements: number of movements to randomize initial board position" << endl;
+            cout << endl;
+            return -1;
+
     }
 
-    int k = 0;
-    cout << "=================================================" << endl;
-    cout << "                  N-PUZZLE SOLVER                " << endl;
-    cout << "=================================================" << endl;
-    cout << endl;
 
-    cout << "Type the number of rows/columns of your puzzle (recommended: 3): ";
-    while((k = getInputInt()) <= 0){
-        cout << "Invalid input. Please, insert a valid number: ";
-    }
+    cout << "Board size set to " << s << "." << endl;
+    cout << "Perfoming " << m << " randomized moves over initial position." << endl;
 
-    Board b(k*k);
+    Board b(s*s);
     Board b2(&b);
 
-    cout << "Type a number of movements to randomize the board (recommended: 10~20): ";
-    while((k = getInputInt()) <= 0){
-        cout << "Invalid input. Please, insert a valid number: ";
-    }
-
-    b2.randomizeBoard(k);
+    b2.randomizeBoard(m);
 
     cout << endl << "Generated board: " << endl;
     b.printBoard();
@@ -47,7 +56,7 @@ int main(int argc, char *argv[]){
     cout << "============================= " << endl;
     cout << "         Backtracking         " << endl;
     cout << "============================= " << endl;
-    if(k < 25)
+    if(m < 25)
         t.backTracking(&b2);
     cout << "----------------------------- " << endl << endl;
 
