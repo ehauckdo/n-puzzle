@@ -7,7 +7,6 @@
 #define MOVE_LEFT 2
 #define MOVE_RIGHT 3
 
-
 class Board{
     public:
         std::vector<int> board;

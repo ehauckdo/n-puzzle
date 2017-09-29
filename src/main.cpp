@@ -1,15 +1,10 @@
-#include <string>
 #include <iostream>
-#include <math.h>
 #include <util.h>
-#include <unistd.h>
 #include <board.h>
 #include <tree.h>
 
 using namespace util;
 using namespace std;
-
-
 
 int main(int argc, char *argv[]){
 

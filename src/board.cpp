@@ -2,9 +2,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <math.h>
-#include <cstring>
 #include <util.h>
-#include <stdexcept>
 
 Board::Board(const int size){
     board_size = size;

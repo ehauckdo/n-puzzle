@@ -96,7 +96,7 @@ namespace util{
 
     }
 
-    int insertOrdered(Node* node, std::vector<Node*>* myvector, Board* objective){
+    void insertOrdered(Node* node, std::vector<Node*>* myvector, Board* objective){
         std::cout << "Current: " << node->board->getH2(objective) << std::endl;
         int initial_size = myvector->size();
         int i = 0;

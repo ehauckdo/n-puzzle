@@ -3,7 +3,6 @@
 #include <board.h>
 #include <node.h>
 
-
 class Tree{
     public:
         Tree(Board* b);
