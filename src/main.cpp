@@ -9,6 +9,14 @@
 using namespace util;
 using namespace std;
 
+void usage(){
+    cout << endl << "usuage: ./n-puzzle [options]" << endl;
+    cout << endl << "\tOptions:" << endl;
+    cout << "\t-s Size: length and width of board in blocks" << endl;
+    cout << "\t-m Movements: number of movements to randomize initial board position" << endl;
+    cout << endl;
+}
+
 int main(int argc, char *argv[]){
 
     int opt, s = 3, m = 10;
@@ -25,15 +33,10 @@ int main(int argc, char *argv[]){
 
         default:
         case 'h':
-            cout << endl << "usuage: ./n-puzzle [options]" << endl;
-            cout << endl << "\tOptions:" << endl;
-            cout << "\t-s Size: length and width of board in blocks" << endl;
-            cout << "\t-m Movements: number of movements to randomize initial board position" << endl;
-            cout << endl;
+            usage();
             return -1;
 
     }
-
 
     cout << "Board size set to " << s << "." << endl;
     cout << "Perfoming " << m << " randomized moves over initial position." << endl;
