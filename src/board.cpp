@@ -7,7 +7,6 @@
 Board::Board(const int size){
     board_size = size;
     board.resize(board_size);
-    //randomizeBoard();
     resetBoard();
 }
 
@@ -26,33 +25,15 @@ void Board::resetBoard(){
 }
 
 void Board::randomizeBoard(int k){
-    //int k;
-    //int verify[board_size];
-    //for(int i = 0; i < board_size; i++){
-    //    verify[i]=0;
-    //}
-
-    //for(int i = 0; i < board_size; i++){
-    //    do{
-    //        k = rand() % board_size;
-    //    }while(verify[k] == 1);
-    //    board[i] = k;
-    //    verify[k] = 1;
-    //    if(k == 0)
-    //        current_pos = i;
-    //}
     srand(4);
-    //int moves = 100;
     int last_move = -1;
     int next_move = -1;
     for(int i = 0; i < k; i++){
         do{
             next_move = rand() % 4;
-            //std::cout << "Move: " << util::getMoveName(next_move) << ", Opposite: " << util::getOppositeMove(last_move) << std::endl;
         }while(next_move == util::getOppositeMove(last_move));
         doMove(next_move);
         last_move = next_move;
-        //std::cout << "Decided: " << util::getMoveName(next_move) << std::endl;
     }
 
 }
@@ -74,8 +55,6 @@ std::vector<int> Board::availableMoves(){
 
     // get 0 position
     std::pair<int, int> matrix_pos = util::getArrayToMatrixIndex(current_pos, k);
-    //printBoard();
-    //std::cout  << "MATRIX POS:" << matrix_pos.first << ", " << matrix_pos.second << std::endl;
 
     // check MOVE_UP
     if(matrix_pos.first - 1 >= 0)
@@ -93,12 +72,6 @@ std::vector<int> Board::availableMoves(){
     if(matrix_pos.second + 1 <= k-1)
         moves.push_back(MOVE_RIGHT);
 
-    //for(int i = 0; i < moves.size(); i++){
-    //    std::cout << util::getMoveName(moves[i]) << std::endl;
-    //}
-
-
-
     return moves;
 }
 
@@ -108,10 +81,6 @@ bool Board::doMove(int move){
     std::pair<int, int> new_pos;
 
     std::vector<int> availableMoves = this->availableMoves();
-//    std::cout <<"Available moves:" << std::endl;
-//    for(std::vector<int>::iterator it = availableMoves.begin(); it != availableMoves.end(); it++)
-//        std::cout << *it << ", ";
-//    std::cout << std::endl;
 
     if(util::contains(availableMoves, move) == false)
         return false;
@@ -141,7 +110,6 @@ bool Board::doMove(int move){
     this->board[index_to_change] = 0;
 
     current_pos = index_to_change;
-//    std::cout << "index to change:" << index_to_change << std::endl;
     return true;
 }
 

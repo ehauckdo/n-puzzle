@@ -20,9 +20,6 @@ Node::Node(Node* parent, Board* b, int executedMove){
     if(lastMove != -1){
         int oppositeMove = util::getOppositeMove(lastMove);
         availableMoves.erase(std::remove(availableMoves.begin(), availableMoves.end(), oppositeMove), availableMoves.end());
-        //std::vector<int>::iterator position = std::find(availableMoves.begin(), availableMoves.end(), lastMove);
-        //if (position != availableMoves.end())
-        //    availableMoves.erase(position);
     }
 
 
@@ -83,8 +80,6 @@ Node* Node::expand(){
 }
 
 int Node::getChildren(Node* current_node, int num_children){
-    //for(std::vector<int>::iterator it = availableMoves.begin(); it != availableMoves.end(); it++){
-    //std::cout << "Checking node " << current_node->id << std::endl;
     int number_of_children = 0;
     int received_from_children = 0;
     for(int i = 0; i < 4; i++){
@@ -94,8 +89,6 @@ int Node::getChildren(Node* current_node, int num_children){
         }
     }
 
-    //std::cout << "Number of children at node " << current_node->id << ": " << number_of_children << std::endl;
-    //std::cout << "Received from children at node "<< current_node->id <<": " << received_from_children << std::endl;
     num_children += number_of_children + received_from_children;
 
     return num_children;
