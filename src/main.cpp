@@ -14,6 +14,7 @@ void usage(){
     cout << endl << "\tOptions:" << endl;
     cout << "\t-s Size: length and width of board in blocks" << endl;
     cout << "\t-m Movements: number of movements to randomize initial board position" << endl;
+    cout << "\t-h Help: print this message" << endl;
     cout << endl;
 }
 
@@ -41,62 +42,62 @@ int main(int argc, char *argv[]){
     cout << "Board size set to " << s << "." << endl;
     cout << "Perfoming " << m << " randomized moves over initial position." << endl;
 
-    Board b(s*s);
-    Board b2(&b);
+    Board myBoard(s*s);
+    Board objectiveBoard(s*s);
 
-    b2.randomizeBoard(m);
+    myBoard.randomizeBoard(m);
 
     cout << endl << "Generated board: " << endl;
-    b.printBoard();
+    myBoard.printBoard();
     cout << endl;
 
     cout << endl << "Objective board: " << endl;
-    b2.printBoard();
+    objectiveBoard.printBoard();
     cout << endl;
 
-    Tree t(&b);
+    Tree t(&myBoard);
 
     cout << "============================= " << endl;
     cout << "         Backtracking         " << endl;
     cout << "============================= " << endl;
     if(m < 25)
-        t.backTracking(&b2);
+        t.backTracking(&objectiveBoard);
     cout << "----------------------------- " << endl << endl;
 
     cout << "============================= " << endl;
     cout << "             BFS              " << endl;
     cout << "============================= " << endl;
-    t.BFS(&b2);
+    t.BFS(&objectiveBoard);
     cout << "----------------------------- " << endl << endl;
 
     cout << "============================= " << endl;
     cout << "             DFS              " << endl;
     cout << "============================= " << endl;
-    t.DFS(&b2);
+    t.DFS(&objectiveBoard);
     cout << "----------------------------- " << endl << endl;
 
     cout << "============================= " << endl;
     cout << "      Uniform Cost Search     " << endl;
     cout << "============================= " << endl;
-    t.uniformCostSearch(&b2);
+    t.uniformCostSearch(&objectiveBoard);
     cout << "----------------------------- " << endl << endl;
 
     cout << "============================= " << endl;
     cout << "        Greedy Search         " << endl;
     cout << "============================= " << endl;
-    t.greedySearch(&b2);
+    t.greedySearch(&objectiveBoard);
     cout << "----------------------------- " << endl << endl;
 
     cout << "============================= " << endl;
     cout << "             A*               " << endl;
     cout << "============================= " << endl;
-    t.aStar(&b2);
+    t.aStar(&objectiveBoard);
     cout << "----------------------------- " << endl << endl;
 
     cout << "============================= " << endl;
     cout << "            IDA*              " << endl;
     cout << "============================= " << endl;
-    t.idaStar(&b2);
+    t.idaStar(&objectiveBoard);
     cout << "----------------------------- " << endl << endl;
 
 }
