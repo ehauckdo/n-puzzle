@@ -64,23 +64,18 @@ ExecutionStats* Tree::backTracking(Board* objective){
     ExecutionStats* stats = NULL;
 
     if(found != NULL){
-        std::cout << "Depth of solution: " << found->depth << std::endl;
-        std::cout << "Expanded nodes: " << expanded_nodes << std::endl;
-        std::cout << "Visited nodes: " << visited_nodes << std::endl;
-        std::cout << "Branching factor: " << root_copy->getChildren(root_copy, 0) / (double)found->depth << std::endl;
-        std::cout << "Execution time: " << 1000*float(clock()-begin_time)/CLOCKS_PER_SEC << "ms"<< std::endl;
-        if(SHOW_PATH)
-            printPath(found);
         stats = new ExecutionStats(found->depth,  expanded_nodes, visited_nodes,
         root_copy->getChildren(root_copy, 0) / (double)found->depth, 1000*float(clock()-begin_time)/CLOCKS_PER_SEC);
         stats->print();
+        if(SHOW_PATH)
+            printPath(found);
     }
 
     delete root_copy;
     return stats;
 }
 
-void Tree::DFS(Board* objective, int limit){
+ExecutionStats* Tree::DFS(Board* objective, int limit){
     std::cout << "limit " << limit << std::endl;
 
     clock_t begin_time = clock();
@@ -124,20 +119,21 @@ void Tree::DFS(Board* objective, int limit){
 
     }
 
+    ExecutionStats* stats = NULL;
+
     if(found != NULL){
-        std::cout << "Depth of solution: " << found->depth << std::endl;
-        std::cout << "Expanded nodes: " << expanded_nodes << std::endl;
-        std::cout << "Visited nodes: " << visited_nodes << std::endl;
-        std::cout << "Branching factor: " << root_copy->getChildren(root_copy, 0) / (double)found->depth << std::endl;
-        std::cout << "Execution time: " << 1000*float(clock()-begin_time)/CLOCKS_PER_SEC << "ms"<< std::endl;
-         if(SHOW_PATH)
+        stats = new ExecutionStats(found->depth,  expanded_nodes, visited_nodes,
+        root_copy->getChildren(root_copy, 0) / (double)found->depth, 1000*float(clock()-begin_time)/CLOCKS_PER_SEC);
+        stats->print();
+        if(SHOW_PATH)
             printPath(found);
     }
 
     delete root_copy;
+    return stats;
 }
 
-void Tree::BFS(Board* objective){
+ExecutionStats* Tree::BFS(Board* objective){
     clock_t begin_time = clock();
     Node* current = new Node(NULL, root->board, -1);
     Node* root_copy = current;
@@ -176,24 +172,25 @@ void Tree::BFS(Board* objective){
 
     }
 
+    ExecutionStats* stats = NULL;
+
     if(found != NULL){
-        std::cout << "Depth of solution: " << found->depth << std::endl;
-        std::cout << "Expanded nodes: " << expanded_nodes << std::endl;
-        std::cout << "Visited nodes: " << visited_nodes << std::endl;
-        std::cout << "Branching factor: " << root_copy->getChildren(root_copy, 0) / (double)found->depth << std::endl;
-        std::cout << "Execution time: " << 1000*float(clock()-begin_time)/CLOCKS_PER_SEC << "ms"<< std::endl;
+        stats = new ExecutionStats(found->depth,  expanded_nodes, visited_nodes,
+        root_copy->getChildren(root_copy, 0) / (double)found->depth, 1000*float(clock()-begin_time)/CLOCKS_PER_SEC);
+        stats->print();
         if(SHOW_PATH)
             printPath(found);
     }
 
     delete root_copy;
+    return stats;
 }
 
-void Tree::uniformCostSearch(Board* objective){
-    BFS(objective);
+ExecutionStats* Tree::uniformCostSearch(Board* objective){
+    return BFS(objective);
 }
 
-void Tree::greedySearch(Board* objective){
+ExecutionStats* Tree::greedySearch(Board* objective){
     clock_t begin_time = clock();
     Node* current = new Node(NULL, root->board, -1);
     Node* root_copy = current;
@@ -244,18 +241,19 @@ void Tree::greedySearch(Board* objective){
 
     }
 
+    ExecutionStats* stats = NULL;
+
     if(found != NULL){
-        std::cout << "Depth of solution: " << found->depth << std::endl;
-        std::cout << "Expanded nodes: " << expanded_nodes << std::endl;
-        std::cout << "Visited nodes: " << visited_nodes << std::endl;
-        std::cout << "Branching factor: " << root_copy->getChildren(root_copy, 0) / (double)found->depth << std::endl;
-        std::cout << "Execution time: " << 1000*float(clock()-begin_time)/CLOCKS_PER_SEC << "ms"<< std::endl;
+        stats = new ExecutionStats(found->depth,  expanded_nodes, visited_nodes,
+        root_copy->getChildren(root_copy, 0) / (double)found->depth, 1000*float(clock()-begin_time)/CLOCKS_PER_SEC);
+        stats->print();
         if(SHOW_PATH)
             printPath(found);
     }
 
     open_nodes.clear();
     delete root_copy;
+    return stats;
 }
 
 int getGvalue(Node* node, Node* root){
@@ -268,7 +266,7 @@ int getGvalue(Node* node, Node* root){
     return g;
 }
 
-void Tree::aStar(Board* objective){
+ExecutionStats* Tree::aStar(Board* objective){
     clock_t begin_time = clock();
     Node* current = new Node(NULL, root->board, -1);
     Node* root_copy = current;
@@ -324,21 +322,22 @@ void Tree::aStar(Board* objective){
 
     }
 
+    ExecutionStats* stats = NULL;
+
     if(found != NULL){
-        std::cout << "Depth of solution: " << found->depth << std::endl;
-        std::cout << "Expanded nodes: " << expanded_nodes << std::endl;
-        std::cout << "Visited nodes: " << visited_nodes << std::endl;
-        std::cout << "Branching factor: " << root_copy->getChildren(root_copy, 0) / (double)found->depth << std::endl;
-        std::cout << "Execution time: " << 1000*float(clock()-begin_time)/CLOCKS_PER_SEC << "ms"<< std::endl;
+        stats = new ExecutionStats(found->depth,  expanded_nodes, visited_nodes,
+        root_copy->getChildren(root_copy, 0) / (double)found->depth, 1000*float(clock()-begin_time)/CLOCKS_PER_SEC);
+        stats->print();
         if(SHOW_PATH)
             printPath(found);
     }
 
     open_nodes.clear();
     delete root_copy;
+    return stats;
 }
 
-void Tree::idaStar(Board* objective){
+ExecutionStats* Tree::idaStar(Board* objective){
     clock_t begin_time = clock();
     Node* current = new Node(NULL, root->board, -1);
     Node* root_copy = current;
@@ -420,12 +419,12 @@ void Tree::idaStar(Board* objective){
 
     }
 
+    ExecutionStats* stats = NULL;
+
     if(found != NULL){
-        std::cout << "Depth of solution: " << found->depth << std::endl;
-        std::cout << "Expanded nodes: " << expanded_nodes << std::endl;
-        std::cout << "Visited nodes: " << visited_nodes << std::endl;
-        std::cout << "Branching factor: " << root_copy->getChildren(root_copy, 0) / (double)found->depth << std::endl;
-        std::cout << "Execution time: " << 1000*float(clock()-begin_time)/CLOCKS_PER_SEC << "ms"<< std::endl;
+        stats = new ExecutionStats(found->depth,  expanded_nodes, visited_nodes,
+        root_copy->getChildren(root_copy, 0) / (double)found->depth, 1000*float(clock()-begin_time)/CLOCKS_PER_SEC);
+        stats->print();
         std::cout << "Old bounds: ";
         for(std::vector<int>::iterator it = old_bounds.begin(); it != old_bounds.end(); it++)
             std::cout << *it << " ";
@@ -435,6 +434,7 @@ void Tree::idaStar(Board* objective){
     }
 
     delete root_copy;
+    return stats;
 }
 
 void Tree::printPath(Node* leaf){
