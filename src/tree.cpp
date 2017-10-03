@@ -14,7 +14,7 @@ Tree::~Tree(){
     delete root;
 }
 
-void Tree::backTracking(Board* objective){
+ExecutionStats* Tree::backTracking(Board* objective){
     clock_t begin_time = clock();
     Node* current = new Node(NULL, root->board, -1);
     Node* root_copy = current;
@@ -61,6 +61,8 @@ void Tree::backTracking(Board* objective){
         }
     }
 
+    ExecutionStats* stats = NULL;
+
     if(found != NULL){
         std::cout << "Depth of solution: " << found->depth << std::endl;
         std::cout << "Expanded nodes: " << expanded_nodes << std::endl;
@@ -69,9 +71,13 @@ void Tree::backTracking(Board* objective){
         std::cout << "Execution time: " << 1000*float(clock()-begin_time)/CLOCKS_PER_SEC << "ms"<< std::endl;
         if(SHOW_PATH)
             printPath(found);
+        stats = new ExecutionStats(found->depth,  expanded_nodes, visited_nodes,
+        root_copy->getChildren(root_copy, 0) / (double)found->depth, 1000*float(clock()-begin_time)/CLOCKS_PER_SEC);
+        stats->print();
     }
 
     delete root_copy;
+    return stats;
 }
 
 void Tree::DFS(Board* objective, int limit){

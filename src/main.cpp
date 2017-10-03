@@ -2,6 +2,7 @@
 #include <util.h>
 #include <board.h>
 #include <tree.h>
+#include <stats.h>
 #include <getopt.h>
 #include <stdio.h>  /* EOF */
 #include <stdlib.h> /* atoi */
@@ -49,10 +50,6 @@ int main(int argc, char *argv[]){
 
     cout << endl << "Generated board: " << endl;
     myBoard.printBoard();
-    cout << endl;
-
-    cout << endl << "Objective board: " << endl;
-    objectiveBoard.printBoard();
     cout << endl;
 
     Tree t(&myBoard);

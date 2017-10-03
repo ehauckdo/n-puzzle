@@ -2,13 +2,14 @@
 #define TREE_H_INCLUDED
 #include <board.h>
 #include <node.h>
+#include <stats.h>
 
 class Tree{
     public:
         Tree(Board* b);
         ~Tree();
 
-        void backTracking(Board* objective);
+        ExecutionStats* backTracking(Board* objective);
         void DFS(Board* objective, int limit = 25);
         void BFS(Board* objective);
         void uniformCostSearch(Board* objective);
