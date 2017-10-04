@@ -21,5 +21,9 @@ void ExecutionStats::print(){
     std::cout << "Execution time: " << this->executionTime << std::endl;
 }
 
+void ExecutionStats::print(bprinter::TablePrinter* tp){
+    *tp << this->method << this->depth << this->expanded << this->branchingFactor << this->executionTime;
+}
+
 ExecutionStats::~ExecutionStats(){
 }

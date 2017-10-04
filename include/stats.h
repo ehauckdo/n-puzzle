@@ -7,6 +7,7 @@ class ExecutionStats{
         ExecutionStats();
         ExecutionStats(std::string m, int d, int e, int v, float b, float t);
         void print();
+        void print(bprinter::TablePrinter* tp);
         ~ExecutionStats();
 
         std::string method;
