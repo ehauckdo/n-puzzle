@@ -4,7 +4,8 @@
 ExecutionStats::ExecutionStats(){
 }
 
-ExecutionStats::ExecutionStats(int d, int e, int v, float b, float t){
+ExecutionStats::ExecutionStats(std::string m, int d, int e, int v, float b, float t){
+    this->method = m;
     this->depth = d;
     this->expanded = e;
     this->visited = v;

@@ -1,13 +1,15 @@
 #ifndef STATS_H_INCLUDED
 #define STATS_H_INCLUDED
+#include "table_printer.h"
 
 class ExecutionStats{
     public:
         ExecutionStats();
-        ExecutionStats(int d, int e, int v, float b, float t);
+        ExecutionStats(std::string m, int d, int e, int v, float b, float t);
         void print();
         ~ExecutionStats();
 
+        std::string method;
         int depth;
         int expanded;
         int visited;
