@@ -64,11 +64,10 @@ ExecutionStats* Tree::backTracking(Board* objective){
     ExecutionStats* stats = NULL;
 
     if(found != NULL){
-        stats = new ExecutionStats(found->depth,  expanded_nodes, visited_nodes,
+        stats = new ExecutionStats("backtracking", found->depth,  expanded_nodes, visited_nodes,
         root_copy->getChildren(root_copy, 0) / (double)found->depth, 1000*float(clock()-begin_time)/CLOCKS_PER_SEC);
-        stats->print();
-        if(SHOW_PATH)
-            printPath(found);
+        //if(SHOW_PATH)
+        //    printPath(found);
     }
 
     delete root_copy;
@@ -122,11 +121,10 @@ ExecutionStats* Tree::DFS(Board* objective, int limit){
     ExecutionStats* stats = NULL;
 
     if(found != NULL){
-        stats = new ExecutionStats(found->depth,  expanded_nodes, visited_nodes,
+        stats = new ExecutionStats("DFS", found->depth,  expanded_nodes, visited_nodes,
         root_copy->getChildren(root_copy, 0) / (double)found->depth, 1000*float(clock()-begin_time)/CLOCKS_PER_SEC);
-        stats->print();
-        if(SHOW_PATH)
-            printPath(found);
+        //if(SHOW_PATH)
+        //    printPath(found);
     }
 
     delete root_copy;
@@ -175,11 +173,10 @@ ExecutionStats* Tree::BFS(Board* objective){
     ExecutionStats* stats = NULL;
 
     if(found != NULL){
-        stats = new ExecutionStats(found->depth,  expanded_nodes, visited_nodes,
+        stats = new ExecutionStats("BFS", found->depth,  expanded_nodes, visited_nodes,
         root_copy->getChildren(root_copy, 0) / (double)found->depth, 1000*float(clock()-begin_time)/CLOCKS_PER_SEC);
-        stats->print();
-        if(SHOW_PATH)
-            printPath(found);
+        //if(SHOW_PATH)
+        //    printPath(found);
     }
 
     delete root_copy;
@@ -187,7 +184,9 @@ ExecutionStats* Tree::BFS(Board* objective){
 }
 
 ExecutionStats* Tree::uniformCostSearch(Board* objective){
-    return BFS(objective);
+    ExecutionStats* stats = BFS(objective);
+    stats->method = "uniform";
+    return stats;
 }
 
 ExecutionStats* Tree::greedySearch(Board* objective){
@@ -244,11 +243,10 @@ ExecutionStats* Tree::greedySearch(Board* objective){
     ExecutionStats* stats = NULL;
 
     if(found != NULL){
-        stats = new ExecutionStats(found->depth,  expanded_nodes, visited_nodes,
+        stats = new ExecutionStats("greedy", found->depth,  expanded_nodes, visited_nodes,
         root_copy->getChildren(root_copy, 0) / (double)found->depth, 1000*float(clock()-begin_time)/CLOCKS_PER_SEC);
-        stats->print();
-        if(SHOW_PATH)
-            printPath(found);
+        //if(SHOW_PATH)
+        //    printPath(found);
     }
 
     open_nodes.clear();
@@ -325,11 +323,10 @@ ExecutionStats* Tree::aStar(Board* objective){
     ExecutionStats* stats = NULL;
 
     if(found != NULL){
-        stats = new ExecutionStats(found->depth,  expanded_nodes, visited_nodes,
+        stats = new ExecutionStats("a*", found->depth,  expanded_nodes, visited_nodes,
         root_copy->getChildren(root_copy, 0) / (double)found->depth, 1000*float(clock()-begin_time)/CLOCKS_PER_SEC);
-        stats->print();
-        if(SHOW_PATH)
-            printPath(found);
+        //if(SHOW_PATH)
+        //    printPath(found);
     }
 
     open_nodes.clear();
@@ -422,15 +419,14 @@ ExecutionStats* Tree::idaStar(Board* objective){
     ExecutionStats* stats = NULL;
 
     if(found != NULL){
-        stats = new ExecutionStats(found->depth,  expanded_nodes, visited_nodes,
+        stats = new ExecutionStats("ida*", found->depth,  expanded_nodes, visited_nodes,
         root_copy->getChildren(root_copy, 0) / (double)found->depth, 1000*float(clock()-begin_time)/CLOCKS_PER_SEC);
-        stats->print();
-        std::cout << "Old bounds: ";
-        for(std::vector<int>::iterator it = old_bounds.begin(); it != old_bounds.end(); it++)
-            std::cout << *it << " ";
-        std::cout << std::endl;
-        if(SHOW_PATH)
-            printPath(found);
+        //std::cout << "Old bounds: ";
+        //for(std::vector<int>::iterator it = old_bounds.begin(); it != old_bounds.end(); it++)
+        //    std::cout << *it << " ";
+        //std::cout << std::endl;
+        //if(SHOW_PATH)
+        //    printPath(found);
     }
 
     delete root_copy;
