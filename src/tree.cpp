@@ -75,7 +75,6 @@ ExecutionStats* Tree::backTracking(Board* objective){
 }
 
 ExecutionStats* Tree::DFS(Board* objective, int limit){
-    std::cout << "limit " << limit << std::endl;
 
     clock_t begin_time = clock();
     Node* current = new Node(NULL, root->board, -1);
@@ -98,7 +97,6 @@ ExecutionStats* Tree::DFS(Board* objective, int limit){
         visited_nodes = visited_nodes + 1;
 
          if(current->board->board == objective->board){
-            std::cout << "Objective found! exiting...: " << std::endl;
             found = current;
             break;
         }
@@ -152,7 +150,6 @@ ExecutionStats* Tree::BFS(Board* objective){
 
         // check if current is the objective
         if(current->board->board == objective->board){
-            std::cout << "Objective found! exiting...: " << std::endl;
             found = current;
             break;
         }
@@ -211,7 +208,6 @@ ExecutionStats* Tree::greedySearch(Board* objective){
 
         // check if current is the objective
         if(current->board->board == objective->board){
-            std::cout << "Objective found! exiting...: " << std::endl;
             found = current;
             break;
         }
@@ -286,7 +282,6 @@ ExecutionStats* Tree::aStar(Board* objective){
 
         // check if current is the objective
         if(current->board->board == objective->board){
-            std::cout << "Objective found! exiting...: " << std::endl;
             found = current;
             break;
         }
@@ -359,7 +354,6 @@ ExecutionStats* Tree::idaStar(Board* objective){
             visited_nodes = visited_nodes + 1;
 
             if(next->board->board == objective->board){
-                std::cout << "Objective found! exiting...: " << std::endl;
                 found = next;
                 break;
             }
