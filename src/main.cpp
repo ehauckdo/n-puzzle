@@ -6,6 +6,7 @@
 #include <getopt.h>
 #include <stdio.h>  /* EOF */
 #include <stdlib.h> /* atoi */
+#include "table_printer.h"
 
 using namespace util;
 using namespace std;
@@ -54,47 +55,30 @@ int main(int argc, char *argv[]){
 
     Tree t(&myBoard);
 
-    cout << "============================= " << endl;
-    cout << "         Backtracking         " << endl;
-    cout << "============================= " << endl;
     if(m < 25)
-        t.backTracking(&objectiveBoard);
-    cout << "----------------------------- " << endl << endl;
+        ExecutionStats* backtracking = t.backTracking(&objectiveBoard);
 
-    cout << "============================= " << endl;
-    cout << "             BFS              " << endl;
-    cout << "============================= " << endl;
-    t.BFS(&objectiveBoard);
-    cout << "----------------------------- " << endl << endl;
+    ExecutionStats* bfs = t.BFS(&objectiveBoard);
+    ExecutionStats* dfs = t.DFS(&objectiveBoard);
+    ExecutionStats* uniform = t.uniformCostSearch(&objectiveBoard);
+    ExecutionStats* greedy = t.greedySearch(&objectiveBoard);
+    ExecutionStats* a = t.aStar(&objectiveBoard);
+    ExecutionStats* ida = t.idaStar(&objectiveBoard);
 
-    cout << "============================= " << endl;
-    cout << "             DFS              " << endl;
-    cout << "============================= " << endl;
-    t.DFS(&objectiveBoard);
-    cout << "----------------------------- " << endl << endl;
+    bprinter::TablePrinter tp(&std::cout);
+    tp.AddColumn("Method", 10);
+    tp.AddColumn("Depth", 10);
+    tp.AddColumn("Expanded", 10);
+    tp.AddColumn("Branch Factor", 10);
+    tp.AddColumn("Execution Time", 10);
 
-    cout << "============================= " << endl;
-    cout << "      Uniform Cost Search     " << endl;
-    cout << "============================= " << endl;
-    t.uniformCostSearch(&objectiveBoard);
-    cout << "----------------------------- " << endl << endl;
-
-    cout << "============================= " << endl;
-    cout << "        Greedy Search         " << endl;
-    cout << "============================= " << endl;
-    t.greedySearch(&objectiveBoard);
-    cout << "----------------------------- " << endl << endl;
-
-    cout << "============================= " << endl;
-    cout << "             A*               " << endl;
-    cout << "============================= " << endl;
-    t.aStar(&objectiveBoard);
-    cout << "----------------------------- " << endl << endl;
-
-    cout << "============================= " << endl;
-    cout << "            IDA*              " << endl;
-    cout << "============================= " << endl;
-    t.idaStar(&objectiveBoard);
-    cout << "----------------------------- " << endl << endl;
+    tp.PrintHeader();
+    bfs->print(&tp);
+    dfs->print(&tp);
+    uniform->print(&tp);
+    greedy->print(&tp);
+    a->print(&tp);
+    ida->print(&tp);
+    tp.PrintFooter();
 
 }
