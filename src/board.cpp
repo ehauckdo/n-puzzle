@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <util.h>
+#include <algorithm>
 
 Board::Board(const int size){
     board_size = size;
@@ -28,10 +29,17 @@ void Board::randomizeBoard(int k){
     srand(4);
     int last_move = -1;
     int next_move = -1;
+    bool is_valid_move = false;
+    bool is_opposite_move = false;
     for(int i = 0; i < k; i++){
+        std::vector<int> moves = this->availableMoves();
         do{
             next_move = rand() % 4;
-        }while(next_move == util::getOppositeMove(last_move));
+            is_valid_move = std::find(moves.begin(), moves.end(), next_move) != moves.end();
+            is_opposite_move = (next_move == util::getOppositeMove(last_move));
+
+        }while(!is_valid_move || is_opposite_move);
+
         doMove(next_move);
         last_move = next_move;
     }
