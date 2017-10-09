@@ -55,7 +55,6 @@ int main(int argc, char *argv[]){
 
     Tree t(&myBoard);
 
-    ExecutionStats* backtracking = t.backTracking(&objectiveBoard);
     ExecutionStats* bfs = t.BFS(&objectiveBoard);
     ExecutionStats* dfs = t.DFS(&objectiveBoard);
     ExecutionStats* uniform = t.uniformCostSearch(&objectiveBoard);
@@ -79,7 +78,6 @@ int main(int argc, char *argv[]){
     ida->print(&tp);
     tp.PrintFooter();
 
-    delete backtracking;
     delete bfs;
     delete dfs;
     delete uniform;
