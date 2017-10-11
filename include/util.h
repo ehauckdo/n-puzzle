@@ -15,4 +15,5 @@ namespace util{
     std::string getMoveName(int move);
     std::string getMoveSymbol(int move);
     int insertOrdered(Node* node, std::vector<Node*>* myvector, Board* objective);
+    std::string getDecimalPlaces(float number, int decimal_places);
 }

@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <node.h>
+#include <iomanip>
 
 #define MOVE_UP 0
 #define MOVE_DOWN 1
@@ -116,6 +117,12 @@ namespace util{
                 std::cout << "Inserted at last ("<< i<<") position, H2: " << std::endl;
             myvector->push_back(node);
         }
+    }
+
+    std::string getDecimalPlaces(float number, int decimal_places){
+        std::stringstream ss;
+        ss << std::fixed << std::setprecision(decimal_places) << number;
+        return ss.str();
     }
 
 }
