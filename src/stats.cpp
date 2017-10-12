@@ -1,5 +1,6 @@
 #include "stats.h"
 #include <iostream>
+#include "util.h"
 
 ExecutionStats::ExecutionStats(){
 }
@@ -22,7 +23,7 @@ void ExecutionStats::print(){
 }
 
 void ExecutionStats::print(bprinter::TablePrinter* tp){
-    *tp << this->method << this->depth << this->expanded << this->branchingFactor << this->executionTime;
+    *tp << this->method << this->depth << this->expanded  << util::getDecimalPlaces(this->branchingFactor, 2) << util::getDecimalPlaces(this->executionTime, 2);
 }
 
 ExecutionStats::~ExecutionStats(){

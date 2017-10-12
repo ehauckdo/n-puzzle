@@ -64,10 +64,10 @@ int main(int argc, char *argv[]){
 
     bprinter::TablePrinter tp(&std::cout);
     tp.AddColumn("Method", 10);
-    tp.AddColumn("Depth", 10);
+    tp.AddColumn("Depth", 8);
     tp.AddColumn("Expanded", 10);
-    tp.AddColumn("Branch Factor", 10);
-    tp.AddColumn("Execution Time", 10);
+    tp.AddColumn("Branching Factor", 18);
+    tp.AddColumn("Execution Time", 15);
 
     tp.PrintHeader();
     bfs->print(&tp);
