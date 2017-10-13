@@ -1,7 +1,7 @@
 #include <iostream>
 #include <util.h>
 #include <board.h>
-#include <tree.h>
+#include <solver.h>
 #include <stats.h>
 #include <getopt.h>
 #include <stdio.h>  /* EOF */
@@ -53,14 +53,14 @@ int main(int argc, char *argv[]){
     myBoard.printBoard();
     cout << endl;
 
-    Tree t(&myBoard);
+    Solver solver(&myBoard);
 
-    ExecutionStats* bfs = t.BFS(&objectiveBoard);
-    ExecutionStats* dfs = t.DFS(&objectiveBoard);
-    ExecutionStats* uniform = t.uniformCostSearch(&objectiveBoard);
-    ExecutionStats* greedy = t.greedySearch(&objectiveBoard);
-    ExecutionStats* a = t.aStar(&objectiveBoard);
-    ExecutionStats* ida = t.idaStar(&objectiveBoard);
+    ExecutionStats* bfs = solver.BFS(&objectiveBoard);
+    ExecutionStats* dfs = solver.DFS(&objectiveBoard);
+    ExecutionStats* uniform = solver.uniformCostSearch(&objectiveBoard);
+    ExecutionStats* greedy = solver.greedySearch(&objectiveBoard);
+    ExecutionStats* a = solver.aStar(&objectiveBoard);
+    ExecutionStats* ida = solver.idaStar(&objectiveBoard);
 
     bprinter::TablePrinter tp(&std::cout);
     tp.AddColumn("Method", 10);
